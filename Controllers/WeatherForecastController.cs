@@ -29,5 +29,12 @@ namespace AIAcademy.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet]
+        [Route("sample")]
+        public IActionResult GetData()
+        {
+            return Ok("Made by heart from Ashu");
+        }
     }
 }
