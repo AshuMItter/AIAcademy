@@ -14,12 +14,16 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
     <PackageReference Include="RazorPay.Core" Version="1.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	  
   </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Model\StudentStudyHoursTotalMarksDataSet.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+	  <Content Include="Dataset\grades.csv">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
   </ItemGroup>
 
 </Project>
