@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AIAcademy.Model;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,11 @@ namespace AIAcademy.Controllers
             // ... (add remaining data points)
         };
 
+        IWebHostEnvironment _env;
+        public StudyHoursController(IWebHostEnvironment env) {
+            _env = env;
+        }
+
         [HttpGet("predict-hours")]
         public ActionResult<PredictionResponse> PredictRequiredHours([FromQuery] double targetScore)
         {
@@ -42,6 +48,19 @@ namespace AIAcademy.Controllers
 
             try
             {
+                // New Code - Calls Expose_StudyHoursList which is a static method of the class
+                //StudentStudyHoursTotalMarksDataSet
+                string path = Path.Combine(_env.ContentRootPath, "Dataset", "grades.csv");
+                List<double> _examScores = null;
+                List<double> _studyHours = StudentStudyHoursTotalMarksDataSet.Expose_StudyHoursList(path, out _examScores);
+                
+               
+                _examScores.AddRange(this._examScores);
+
+                _studyHours.AddRange(this._studyHours);
+
+                // If we remove the code till here from New Code the old code will work.
+                // New Code
                 // Calculate regression parameters (marks as X, hours as Y)
                 var regression = CalculateLinearRegression(_examScores, _studyHours);
 

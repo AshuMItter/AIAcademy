@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
-
+using AIAcademy.Model;
 namespace AIAcademy.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+        IWebHostEnvironment _env;
+       
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -13,9 +15,10 @@ namespace AIAcademy.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger,IWebHostEnvironment env)
         {
             _logger = logger;
+            _env = env;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
@@ -34,6 +37,10 @@ namespace AIAcademy.Controllers
         [Route("sample")]
         public IActionResult GetData()
         {
+            string path = Path.Combine(_env.ContentRootPath, "Dataset", "grades.csv");
+            List<double> _marksOBtained = null;
+           List<double> _totalHours= StudentStudyHoursTotalMarksDataSet.Expose_StudyHoursList(path,out _marksOBtained);
+
             return Ok("Made by heart from Ashu");
         }
     }
