@@ -16,11 +16,11 @@
                  double _studyHours = 0;
                 double _marks = 0;
 
-                if (double.TryParse(spilttedRow[16], out _studyHours))
+                if (double.TryParse(spilttedRow[0], out _studyHours))
                 {
                     _studyHoursPerWeek.Add(_studyHours);
                 }
-                if (double.TryParse(spilttedRow[14], out _marks))
+                if (double.TryParse(spilttedRow[19], out _marks))
                 {
                     _marksObtained.Add(_marks);
                 }
