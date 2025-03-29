@@ -50,14 +50,14 @@ namespace AIAcademy.Controllers
             {
                 // New Code - Calls Expose_StudyHoursList which is a static method of the class
                 //StudentStudyHoursTotalMarksDataSet
-                string path = Path.Combine(_env.ContentRootPath, "Dataset", "grades.csv");
-                List<double> _examScores = null;
-                List<double> _studyHours = StudentStudyHoursTotalMarksDataSet.Expose_StudyHoursList(path, out _examScores);
+                //string path = Path.Combine(_env.ContentRootPath, "Dataset", "grades.csv");
+                //List<double> _examScores = null;
+                //List<double> _studyHours = StudentStudyHoursTotalMarksDataSet.Expose_StudyHoursList(path, out _examScores);
                 
                
-                _examScores.AddRange(this._examScores);
+                //_examScores.AddRange(this._examScores);
 
-                _studyHours.AddRange(this._studyHours);
+                //_studyHours.AddRange(this._studyHours);
 
                 // If we remove the code till here from New Code the old code will work.
                 // New Code
