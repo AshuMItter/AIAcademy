@@ -38,7 +38,15 @@ namespace AIAcademy
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddCors(policy =>
+            {
+                policy.AddPolicy("cors", pol =>
+                {
+                    pol.AllowAnyHeader();
+                    pol.AllowAnyMethod();
+                    pol.AllowAnyOrigin();
+                });
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -53,7 +61,7 @@ namespace AIAcademy
             app.UseAuthentication();
             app.UseAuthorization();
 
-
+            app.UseCors("cors");
             app.MapControllers();
 
             app.Run();
