@@ -8,7 +8,7 @@ using QRCoder;
 //using QuestPDF.Infrastructure;
 //using System.Reflection.Metadata;
 using System.Text;
-using DinkToPdf;
+
 using Microsoft.EntityFrameworkCore;
 
 
@@ -91,24 +91,24 @@ public class RegistrationController : ControllerBase
         string htmlContent = GenerateWebinarHtml(webinar, registration);
 
         // 2. Convert HTML to PDF
-        var converter = new BasicConverter(new PdfTools());
-        var doc = new HtmlToPdfDocument()
-        {
-            GlobalSettings = {
-                ColorMode = ColorMode.Color,
-                Orientation = Orientation.Portrait,
-                PaperSize = PaperKind.A4,
-                Margins = new MarginSettings() { Top = 20, Bottom = 20, Left = 20, Right = 20 }
-            },
-            Objects = {
-                new ObjectSettings() {
-                    HtmlContent = htmlContent,
-                    WebSettings = { DefaultEncoding = "utf-8" },
-                    HeaderSettings = { FontSize = 9, Right = "Page [page] of [toPage]", Line = true },
-                    FooterSettings = { FontSize = 9, Right = "© " + DateTime.Now.Year + " Webinar Registration System" }
-                }
-            }
-        };
+        //var converter = new BasicConverter(new PdfTools());
+        //var doc = new HtmlToPdfDocument()
+        //{
+        //    GlobalSettings = {
+        //        ColorMode = ColorMode.Color,
+        //        Orientation = Orientation.Portrait,
+        //        PaperSize = PaperKind.A4,
+        //        Margins = new MarginSettings() { Top = 20, Bottom = 20, Left = 20, Right = 20 }
+        //    },
+        //    Objects = {
+        //        new ObjectSettings() {
+        //            HtmlContent = htmlContent,
+        //            WebSettings = { DefaultEncoding = "utf-8" },
+        //            HeaderSettings = { FontSize = 9, Right = "Page [page] of [toPage]", Line = true },
+        //            FooterSettings = { FontSize = 9, Right = "© " + DateTime.Now.Year + " Webinar Registration System" }
+        //        }
+        //    }
+        //};
         // return converter.Convert(doc);
         return Encoding.UTF8.GetBytes(htmlContent);
     }

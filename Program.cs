@@ -1,7 +1,6 @@
 
 using AIAcademy.Controllers;
-using DinkToPdf.Contracts;
-using DinkToPdf;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -39,10 +38,8 @@ namespace AIAcademy
             builder.Services.AddDbContext<WebinarDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // Add PDF converter
-            builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
-
-
+            
+         
             builder.Services.AddAuthorization();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

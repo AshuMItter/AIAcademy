@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DinkToPdf" Version="1.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
@@ -21,10 +20,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
     <PackageReference Include="QRCoder" Version="1.6.0" />
-    <PackageReference Include="QuestPDF" Version="2025.1.7" />
     <PackageReference Include="RazorPay.Core" Version="1.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-    <PackageReference Include="WkHtmlToPdf" Version="1.0.2" />
 	  
   </ItemGroup>
 
@@ -38,11 +35,6 @@
 	  <Content Include="Dataset\performance.csv">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
-	  
-	
-	   <Content Include="libwkhtmltox.dll">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
 	  <Content Include="Data\webinar.mdf">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
@@ -50,12 +42,6 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="libwkhtmltox.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
