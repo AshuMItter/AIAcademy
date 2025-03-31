@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using AIAcademy.Model;
+
 namespace AIAcademy.Controllers
 {
     [ApiController]

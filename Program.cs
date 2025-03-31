@@ -1,5 +1,9 @@
 
+using AIAcademy.Controllers;
+using DinkToPdf.Contracts;
+using DinkToPdf;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -31,7 +35,13 @@ namespace AIAcademy
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
-});
+});// Add DbContext
+            builder.Services.AddDbContext<WebinarDbContext>(options =>
+                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Add PDF converter
+            builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
 
             builder.Services.AddAuthorization();
 
@@ -63,7 +73,20 @@ namespace AIAcademy
 
             app.UseCors("cors");
             app.MapControllers();
-
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
+            //    try
+            //    {
+            //        var context = services.GetRequiredService<AppDbContext>();
+            //        context.Database.Migrate(); // Apply migrations
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        var logger = services.GetRequiredService<ILogger<Program>>();
+            //        logger.LogError(ex, "An error occurred while migrating the database.");
+            //    }
+            //}
             app.Run();
         }
     }
