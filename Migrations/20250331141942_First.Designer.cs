@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIAcademy.Migrations
 {
     [DbContext(typeof(WebinarDbContext))]
-    [Migration("20250330195624_First")]
+    [Migration("20250331141942_First")]
     partial class First
     {
         /// <inheritdoc />

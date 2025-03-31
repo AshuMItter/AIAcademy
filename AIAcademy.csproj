@@ -42,7 +42,10 @@
 	
 	   <Content Include="libwkhtmltox.dll">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>	 
+	  </Content>
+	  <Content Include="Data\webinar.mdf">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
   </ItemGroup>
 
   <ItemGroup>
