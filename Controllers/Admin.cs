@@ -21,7 +21,7 @@ public class WebinarAdminController : ControllerBase
     public async Task<IActionResult> CreateWebinar([FromBody] Webinar webinar, [FromHeader] string username, [FromHeader] string password)
     {
         // Authenticate admin
-        var admin = await _context.AdminUsers.FirstOrDefaultAsync(a => a.Username == username && a.Password == password);
+       // var admin = await _context.AdminUsers.FirstOrDefaultAsync(a => a.Username == username && a.Password == password);
         if(username == "admin" && password=="admin123") {
             if (!ModelState.IsValid)
             {
