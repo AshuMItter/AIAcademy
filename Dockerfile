@@ -22,4 +22,4 @@ RUN dotnet publish "./AIAcademy.csproj" -c $BUILD_CONFIGURATION -o /app/publish 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "AIAcademy.dll","--migrate"]
+ENTRYPOINT ["sh", "-c", "dotnet AIAcademy.dll --migrate && dotnet AIAcademy.dll"]
