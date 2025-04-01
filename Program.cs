@@ -38,8 +38,11 @@ namespace AIAcademy
             builder.Services.AddDbContext<WebinarDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            
-         
+            builder.Services.AddHttpsRedirection(options =>
+            {
+                options.HttpsPort = 8081;
+            });
+
             builder.Services.AddAuthorization();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
