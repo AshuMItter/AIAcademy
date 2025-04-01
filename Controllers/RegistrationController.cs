@@ -159,7 +159,7 @@ public class RegistrationController : ControllerBase
         // Generate QR code
         var qrGenerator = new QRCodeGenerator();
 
-        string webinarData = $"""   
+        string webinarData1 = $"""   
                               AI ACADEMY
                               Topic     :   {webinar.Topic}
                               Date      :   {webinar.Date}
@@ -173,7 +173,7 @@ public class RegistrationController : ControllerBase
         Random random = new Random(1);
 
        
-        string webinarDataFuturistic = $"""
+        string webinarDataFuturistic2 = $"""
                      █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
                      │  ⚡ AI ACADEMY ⚡  │
                      █══════════════════█
@@ -189,7 +189,25 @@ public class RegistrationController : ControllerBase
                      [ SCANNED HOLO-ACCESS ]
                      [ EXPIRES NEVER ]
                      """;
-        var qrData = qrGenerator.CreateQrCode(webinarDataFuturistic, QRCodeGenerator.ECCLevel.Q);
+
+        string webinarDataFuturistic3 = $"""
+              \u001b[38;2;0;255;255m\u001b[48;2;0;0;80m█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
+              \u001b[38;2;255;255;0m│  ⚡ \u001b[1mAI ACADEMY\u001b[0m\u001b[38;2;255;255;0m ⚡  │
+              \u001b[38;2;0;255;255m█══════════════════█
+              \u001b[38;2;0;255;0m│ TOPIC ⚡ \u001b[38;2;255;255;255m{webinar.Topic,-25} \u001b[38;2;0;255;0m│
+              \u001b[38;2;0;255;0m│ DATE  ⚡ \u001b[38;2;255;255;255m{webinar.Date:yyyy-MM-dd} \u001b[38;2;255;165;0m⌛ {DateTime.Now:HHmm}Z \u001b[38;2;0;255;0m│
+              \u001b[38;2;0;255;0m│ TIME  ⚡ \u001b[38;2;255;255;255m{webinar.Time,-25} \u001b[38;2;0;255;0m│
+              \u001b[38;2;0;255;0m│ ID    ⚡ \u001b[38;2;255;255;255m{webinar.WebexMeetingId,-25} \u001b[38;2;0;255;0m│
+              \u001b[38;2;0;255;0m│ PASS  ⚡ \u001b[38;2;255;255;255m{webinar.WebexPasscode,-25} \u001b[38;2;0;255;0m│
+              \u001b[38;2;0;255;0m│ URL   ⚡ \u001b[4m\u001b[38;2;135;206;250m{webinar.WebexUrl,-25}\u001b[0m\u001b[38;2;0;255;0m\u001b[48;2;0;0;80m │
+              \u001b[38;2;0;255;255m█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
+              \u001b[38;2;255;255;255m│   \u001b[38;2;0;255;255mDR. M.  ⚡  \u001b[38;2;0;255;0mVERIFIED  │
+              \u001b[38;2;0;255;255m▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+              \u001b[38;2;200;200;200m[ \u001b[38;2;0;255;255mSCANNED HOLO-ACCESS \u001b[38;2;200;200;200m]
+              \u001b[38;2;200;200;200m[ \u001b[38;2;255;50;50mEXPIRES NEVER \u001b[38;2;200;200;200m]
+              \u001b[0m
+              """;
+        var qrData = qrGenerator.CreateQrCode(webinarDataFuturistic3, QRCodeGenerator.ECCLevel.Q);
         var qrCode = new Base64QRCode(qrData);
         var qrCodeImageBase64 = qrCode.GetGraphic(20);
 
@@ -215,6 +233,73 @@ public class RegistrationController : ControllerBase
     --glow-pink: 0 0 10px rgba(255, 0, 255, 0.7);
     --glow-purple: 0 0 10px rgba(188, 19, 254, 0.7);
 }
+/* New CSS for sound*/
+.sound-visualizer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(10, 10, 26, 0.7);
+    border: 1px solid var(--neon-blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 0 20px rgba(0, 255, 252, 0.3);
+    transition: all 0.3s ease;
+}
+
+.sound-visualizer:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(0, 255, 252, 0.5);
+}
+
+.sound-visualizer i {
+    color: var(--neon-blue);
+    font-size: 24px;
+}
+
+.sound-visualizer.active {
+    background: rgba(0, 255, 252, 0.1);
+    box-shadow: 0 0 30px rgba(0, 255, 252, 0.7);
+}
+
+.sound-wave {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    margin: 10px 0;
+    gap: 3px;
+}
+
+.sound-bar {
+    width: 4px;
+    height: 10px;
+    background: var(--neon-blue);
+    border-radius: 2px;
+    animation: sound-wave 1.5s infinite ease-in-out;
+    transform-origin: bottom;
+}
+
+.sound-bar:nth-child(1) { animation-delay: 0.1s; }
+.sound-bar:nth-child(2) { animation-delay: 0.2s; }
+.sound-bar:nth-child(3) { animation-delay: 0.3s; }
+.sound-bar:nth-child(4) { animation-delay: 0.4s; }
+.sound-bar:nth-child(5) { animation-delay: 0.5s; }
+.sound-bar:nth-child(6) { animation-delay: 0.6s; }
+.sound-bar:nth-child(7) { animation-delay: 0.7s; }
+.sound-bar:nth-child(8) { animation-delay: 0.8s; }
+
+@keyframes sound-wave {
+    0%, 100% { transform: scaleY(0.3); }
+    50% { transform: scaleY(2); }
+}
+
+
 /* Futuristic Holographic Badge */
 .holographic-badge {
     width: 200px;
@@ -1120,9 +1205,231 @@ body::before {
         });
     </script>");
 
+        html.AppendLine(@"    <script>
+        // Sound effects from SoundJay.com
+        const soundToggle = document.getElementById('soundToggle');
+        let soundsEnabled = false;
+        const sounds = {
+            hover: new Audio('https://www.soundjay.com/buttons/sounds/beep-07.mp3'),
+            click: new Audio('https://www.soundjay.com/buttons/sounds/button-09.mp3'),
+            scan: new Audio('https://www.soundjay.com/mechanical/sounds/radar-01.mp3'),
+            success: new Audio('https://www.soundjay.com/buttons/sounds/button-21.mp3'),
+            ambient: new Audio('https://www.soundjay.com/communication/sounds/star-trek-communicator-01.mp3'),
+            error: new Audio('https://www.soundjay.com/buttons/sounds/beep-05.mp3'),
+            whoosh: new Audio('https://www.soundjay.com/mechanical/sounds/sci-fi-whoosh-01.mp3')
+        };
+
+        // Set volume levels
+        Object.values(sounds).forEach(sound => {
+            sound.volume = 0.3;
+        });
+        sounds.ambient.volume = 0.1;
+        sounds.ambient.loop = true;
+
+        // Toggle sound effects
+        soundToggle.addEventListener('click', function() {
+            soundsEnabled = !soundsEnabled;
+            this.classList.toggle('active');
+            
+            if (soundsEnabled) {
+                sounds.ambient.play().catch(e => console.log('Audio play failed:', e));
+                sounds.click.play().catch(e => console.log('Audio play failed:', e));
+            } else {
+                sounds.ambient.pause();
+            }
+        });
+
+        // Create particle effects with sound
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.confirmation-container');
+            
+            // Play ambient sound on load if enabled
+            if (soundsEnabled) {
+                sounds.ambient.play().catch(e => console.log('Audio play failed:', e));
+            }
+            
+            // Create particles on mouse move with sound
+            document.addEventListener('mousemove', function(e) {
+                if (soundsEnabled) {
+                    sounds.hover.currentTime = 0;
+                    sounds.hover.play().catch(e => console.log('Audio play failed:', e));
+                }
+                
+                for (let i = 0; i < 3; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    
+                    // Randomize position slightly around cursor
+                    const x = e.clientX + (Math.random() - 0.5) * 20;
+                    const y = e.clientY + (Math.random() - 0.5) * 20;
+                    
+                    // Randomize movement direction and distance
+                    const tx = (Math.random() - 0.5) * 200;
+                    const ty = (Math.random() - 0.5) * 200;
+                    
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+                    particle.style.setProperty('--tx', tx + 'px');
+                    particle.style.setProperty('--ty', ty + 'px');
+                    
+                    // Randomize color
+                    const colors = ['#0ff0fc', '#ff00ff', '#bc13fe', '#00ff88'];
+                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    document.body.appendChild(particle);
+                    
+                    // Remove particle after animation
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 2000);
+                }
+            });
+            
+            // Add hover effect to cards with sound
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    if (soundsEnabled) {
+                        sounds.whoosh.currentTime = 0;
+                        sounds.whoosh.play().catch(e => console.log('Audio play failed:', e));
+                    }
+                    this.style.borderLeftColor = 'var(--neon-green)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    if (this.classList.contains('webex-card')) {
+                        this.style.borderLeftColor = 'var(--neon-blue)';
+                    } else if (this.classList.contains('webinar-card')) {
+                        this.style.borderLeftColor = 'var(--neon-pink)';
+                    } else {
+                        this.style.borderLeftColor = 'var(--neon-purple)';
+                    }
+                });
+            });
+
+            // Add click sound to all interactive elements
+            const interactiveElements = document.querySelectorAll('a, .qr-code, .cyber-button, .sound-visualizer');
+            interactiveElements.forEach(el => {
+                el.addEventListener('click', function() {
+                    if (soundsEnabled) {
+                        sounds.click.currentTime = 0;
+                        sounds.click.play().catch(e => console.log('Audio play failed:', e));
+                    }
+                });
+            });
+        });
+
+        // Enhanced holographic badge interaction with sounds
+        const qrCode = document.querySelector('.qr-code');
+        const verificationBeam = document.querySelector('.verification-beam');
+        const verificationText = document.querySelector('.verification-text');
+        
+        qrCode.addEventListener('click', function() {
+            if (soundsEnabled) {
+                sounds.scan.currentTime = 0;
+                sounds.scan.play().catch(e => console.log('Audio play failed:', e));
+            }
+            
+            // Simulate scan interaction
+            this.classList.add('scanning');
+            verificationBeam.style.animation = 'none';
+            verificationBeam.offsetHeight; // Trigger reflow
+            verificationBeam.style.animation = 'beam 0.5s ease-in-out';
+            
+            // Change verification status
+            verificationText.textContent = 'SCANNING';
+            verificationText.style.color = 'var(--neon-blue)';
+            
+            setTimeout(() => {
+                if (soundsEnabled) {
+                    sounds.success.play().catch(e => console.log('Audio play failed:', e));
+                }
+                verificationText.textContent = 'VERIFIED';
+                verificationText.style.color = 'var(--neon-green)';
+                this.classList.remove('scanning');
+                
+                // Create a pulse effect
+                const pulse = document.createElement('div');
+                pulse.className = 'pulse-effect';
+                pulse.style.position = 'absolute';
+                pulse.style.width = '100%';
+                pulse.style.height = '100%';
+                pulse.style.borderRadius = '50%';
+                pulse.style.border = '2px solid var(--neon-green)';
+                pulse.style.top = '0';
+                pulse.style.left = '0';
+                pulse.style.animation = 'pulse 1s ease-out';
+                pulse.style.zIndex = '1';
+                qrCode.appendChild(pulse);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    pulse.remove();
+                }, 1000);
+            }, 1500);
+        });
+        
+        // Add hover effect to badge with sound
+        const badge = document.querySelector('.holographic-badge');
+        badge.addEventListener('mouseenter', function() {
+            if (soundsEnabled) {
+                sounds.hover.currentTime = 0;
+                sounds.hover.play().catch(e => console.log('Audio play failed:', e));
+            }
+            this.style.animation = 'float 3s ease-in-out infinite';
+            document.querySelector('.holo-circle').style.animationDuration = '10s';
+            document.querySelector('.holo-circle-2').style.animationDuration = '8s';
+            document.querySelector('.holo-circle-3').style.animationDuration = '12s';
+        });
+        
+        badge.addEventListener('mouseleave', function() {
+            this.style.animation = 'float 6s ease-in-out infinite';
+            document.querySelector('.holo-circle').style.animationDuration = '20s';
+            document.querySelector('.holo-circle-2').style.animationDuration = '20s';
+            document.querySelector('.holo-circle-3').style.animationDuration = '20s';
+        });
+
+        // Sound wave visualization
+        function createSoundWave() {
+            const soundWave = document.createElement('div');
+            soundWave.className = 'sound-wave';
+            
+            for (let i = 0; i < 8; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'sound-bar';
+                soundWave.appendChild(bar);
+            }
+            
+            return soundWave;
+        }
+
+        // Add sound wave to sound toggle when enabled
+        soundToggle.addEventListener('click', function() {
+            if (soundsEnabled) {
+                const existingWave = this.querySelector('.sound-wave');
+                if (!existingWave) {
+                    this.appendChild(createSoundWave());
+                }
+            } else {
+                const wave = this.querySelector('.sound-wave');
+                if (wave) {
+                    wave.remove();
+                }
+            }
+        });
+    </script>");
+
+
         html.AppendLine("    <!-- Font Awesome for icons -->");
         html.AppendLine("    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js\"></script>");
+        html.AppendLine("    <div class=\"sound-visualizer\" id=\"soundToggle\">");
+        html.AppendLine("        <i class=\"fas fa-volume-up\"></i>");
+        html.AppendLine("    </div>");
+
+
         html.AppendLine("</body>");
+
+
         html.AppendLine("</html>");
 
         return html.ToString();
