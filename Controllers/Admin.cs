@@ -33,24 +33,25 @@ public class WebinarAdminController : ControllerBase
 
         WebinarCSVContext.WriteDataToCSV(Path.Combine(_env.ContentRootPath, "Dataset", "webinar.csv"), webinar);
 
+        return Ok("Data");
         // Authenticate admin
         // var admin = await _context.AdminUsers.FirstOrDefaultAsync(a => a.Username == username && a.Password == password);
-        if (username == "admin" && password=="admin123") {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //if (username == "admin" && password=="admin123") {
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            _context.Webinars.Add(webinar);
-            await _context.SaveChangesAsync();
+        //    _context.Webinars.Add(webinar);
+        //    await _context.SaveChangesAsync();
 
-            _logger.LogInformation($"New webinar created: {webinar.Topic} by admin {username}");
-            return CreatedAtAction(nameof(GetWebinar), new { id = webinar.Id }, webinar);
-        }
-        else {
+        //    _logger.LogInformation($"New webinar created: {webinar.Topic} by admin {username}");
+        //    return CreatedAtAction(nameof(GetWebinar), new { id = webinar.Id }, webinar);
+        //}
+        //else {
 
-            return Unauthorized("Invalid admin credentials");
-        }
+        //    return Unauthorized("Invalid admin credentials");
+        //}
         //if (admin == null)
         //{
         //    return Unauthorized("Invalid admin credentials");
