@@ -1,4 +1,5 @@
 ﻿// Controllers/WebinarAdminController.cs
+using AIAcademy.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,19 +11,31 @@ public class WebinarAdminController : ControllerBase
 {
     private readonly WebinarDbContext _context;
     private readonly ILogger<WebinarAdminController> _logger;
-
-    public WebinarAdminController(WebinarDbContext context, ILogger<WebinarAdminController> logger)
+    private IWebHostEnvironment _env;
+    public WebinarAdminController(WebinarDbContext context, ILogger<WebinarAdminController> logger, IWebHostEnvironment env)
     {
         _context = context;
         _logger = logger;
+        _env = env;
+    }
+
+    [HttpGet]
+    [Route("get-data")]
+    public string DataGet()
+    {
+        string result = WebinarCSVContext.ReadDataFromCSV(Path.Combine(_env.ContentRootPath, "Dataset", "webinar.csv"));
+        return result;
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateWebinar([FromBody] Webinar webinar, [FromHeader] string username, [FromHeader] string password)
     {
+
+        WebinarCSVContext.WriteDataToCSV(Path.Combine(_env.ContentRootPath, "Dataset", "webinar.csv"), webinar);
+
         // Authenticate admin
-       // var admin = await _context.AdminUsers.FirstOrDefaultAsync(a => a.Username == username && a.Password == password);
-        if(username == "admin" && password=="admin123") {
+        // var admin = await _context.AdminUsers.FirstOrDefaultAsync(a => a.Username == username && a.Password == password);
+        if (username == "admin" && password=="admin123") {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

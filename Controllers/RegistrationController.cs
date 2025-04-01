@@ -21,11 +21,12 @@ public class RegistrationController : ControllerBase
 {
     private readonly WebinarDbContext _context;
     private readonly ILogger<RegistrationController> _logger;
-
-    public RegistrationController(WebinarDbContext context, ILogger<RegistrationController> logger)
+    private IWebHostEnvironment _env;
+    public RegistrationController(WebinarDbContext context, ILogger<RegistrationController> logger, IWebHostEnvironment env)
     {
         _context = context;
         _logger = logger;
+        _env = env;
 
         // Initialize QuestPDF (only needed once at startup)
         //QuestPDF.Settings.License = LicenseType.Community;
@@ -113,6 +114,7 @@ public class RegistrationController : ControllerBase
         return Encoding.UTF8.GetBytes(htmlContent);
     }
 
+    
     private string GenerateWebinarHtml(Webinar webinar, Registration registration)
     {
         // Generate QR code

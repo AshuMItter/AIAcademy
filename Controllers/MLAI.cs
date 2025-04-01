@@ -51,6 +51,7 @@ namespace AIAcademy.Controllers
                 // New Code - Calls Expose_StudyHoursList which is a static method of the class
                 //StudentStudyHoursTotalMarksDataSet
                 string path = Path.Combine(_env.ContentRootPath, "Dataset", "performance.csv");
+
                 List<double> _examScores = null;
                 List<double> _studyHours = StudentStudyHoursTotalMarksDataSet.Expose_StudyHoursList(path, out _examScores);
 

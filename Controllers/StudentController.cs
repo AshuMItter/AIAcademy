@@ -13,15 +13,21 @@ namespace AIAcademy.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private IWebHostEnvironment _env;
 
-        public StudentController(IConfiguration configuration)
+        public StudentController(IConfiguration configuration, IWebHostEnvironment env)
         {
             _configuration = configuration;
+            _env = env;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> RegisterStudent([FromBody] StudentRegistrationModel model)
         {
+
+
+
+
             // Step 1: Authenticate and authorize the user
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
