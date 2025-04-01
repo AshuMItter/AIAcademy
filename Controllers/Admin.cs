@@ -19,21 +19,19 @@ public class WebinarAdminController : ControllerBase
         _env = env;
     }
 
-    [HttpGet]
-    [Route("get-data")]
-    public string DataGet()
-    {
-        string result = WebinarCSVContext.ReadDataFromCSV(Path.Combine(_env.ContentRootPath, "Dataset", "webinar.csv"));
-        return result;
-    }
+    //[HttpGet]
+    //[Route("get-data")]
+    //public string DataGet()
+    //{
+    //    string result = WebinarCSVContext.ReadDataFromCSV(Path.Combine(_env.ContentRootPath, "Dataset", "webinar.csv"));
+    //    return result;
+    //}
 
     [HttpPost]
     public async Task<IActionResult> CreateWebinar([FromBody] Webinar webinar, [FromHeader] string username, [FromHeader] string password)
     {
 
-        WebinarCSVContext.WriteDataToCSV(Path.Combine(_env.ContentRootPath, "Dataset", "webinar.csv"), webinar);
-
-        return Ok("Data");
+       return Ok("data");
         // Authenticate admin
         // var admin = await _context.AdminUsers.FirstOrDefaultAsync(a => a.Username == username && a.Password == password);
         //if (username == "admin" && password=="admin123") {
@@ -69,14 +67,13 @@ public class WebinarAdminController : ControllerBase
         //return CreatedAtAction(nameof(GetWebinar), new { id = webinar.Id }, webinar);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Webinar>> GetWebinar(int id)
-    {
-        var webinar = await _context.Webinars.FindAsync(id);
-        if (webinar == null)
-        {
-            return NotFound();
-        }
-        return webinar;
-    }
+    //[HttpGet("{id}")]
+    //public async Task<ActionResult<List<Webinar>>> GetWebinar(int id)
+    //{
+       
+       
+
+      
+    //    return webinars;
+    //}
 }

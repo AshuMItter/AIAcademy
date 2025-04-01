@@ -10,6 +10,8 @@ using QRCoder;
 using System.Text;
 
 using Microsoft.EntityFrameworkCore;
+using AIAcademy.Model;
+using System.Net.Http;
 
 
 
@@ -22,11 +24,13 @@ public class RegistrationController : ControllerBase
     private readonly WebinarDbContext _context;
     private readonly ILogger<RegistrationController> _logger;
     private IWebHostEnvironment _env;
+   
     public RegistrationController(WebinarDbContext context, ILogger<RegistrationController> logger, IWebHostEnvironment env)
     {
         _context = context;
         _logger = logger;
         _env = env;
+      
 
         // Initialize QuestPDF (only needed once at startup)
         //QuestPDF.Settings.License = LicenseType.Community;
@@ -36,8 +40,15 @@ public class RegistrationController : ControllerBase
     {
         try
         {
-            var webinars = await _context.Webinars
-                .Where(w => w.Date >= DateTime.UtcNow.AddDays(-1)) // Include webinars from yesterday
+            // Read all webinars from CSV
+            var allWebinars = WebinarCSVContext.ReadDataFromCSV(Path.Combine(_env.ContentRootPath, "Dataset", "webinar.csv"));
+
+            // Get current UTC date (without time component) for accurate comparison
+            var currentUtcDate = DateTime.UtcNow.Date;
+
+            // Filter webinars from yesterday onward and order by date
+            var filteredWebinars = allWebinars
+                .Where(w => w.Date.Date >= currentUtcDate.AddDays(-1)) // Include webinars from yesterday
                 .OrderBy(w => w.Date)
                 .Select(w => new WebinarDto
                 {
@@ -52,9 +63,9 @@ public class RegistrationController : ControllerBase
                     WebexMeetingId = w.WebexMeetingId,
                     WebexPasscode = w.WebexPasscode
                 })
-                .ToListAsync();
+                .ToList(); // Materialize the query to execute it now
 
-            return Ok(webinars);
+            return Ok(filteredWebinars);
         }
         catch (Exception ex)
         {
@@ -66,23 +77,51 @@ public class RegistrationController : ControllerBase
     [Route("webinar-registration")]
     public async Task<IActionResult> RegisterForWebinar([FromBody] Registration registration)
     {
-        if (!ModelState.IsValid)
+        //if (!ModelState.IsValid)
+        //{
+        //    return BadRequest(ModelState);
+        //}
+
+        //var webinar = await _context.Webinars.FindAsync(registration.WebinarId);
+        //if (webinar == null)
+        //{
+        //    return NotFound("Webinar not found");
+        //}
+
+        //_context.Registrations.Add(registration);
+        //await _context.SaveChangesAsync();
+        var webinar = WebinarCSVContext.ReadDataFromCSV(Path.Combine(_env.ContentRootPath, "Dataset", "webinar.csv"));
+
+        _logger.LogInformation($"New registration for webinar {webinar[0].Topic} by {registration.StudentName}");
+
+
+         var pdfBytes = GenerateWebinarPdf(webinar[0], registration);
+        // These IDs come from inspecting the Google Form HTML
+        var formFields = new Dictionary<string, string>
         {
-            return BadRequest(ModelState);
+            // Map your model properties to Google Form field IDs
+            // These are the 'entry.' values from the form HTML
+            {"entry.128722308", registration.StudentName},        // Full Name
+            {"entry.1531374950", registration.Email},             // Email Address
+            {"entry.686306249", registration.Phone ?? ""},        // Phone Number
+            {"entry.190390107", ""},                             // Organization/Affiliation (empty in your sample)
+            {"entry.1225619309", ""}                             // Professional Experience (empty in your sample)
+        };
+
+        // The form action URL from the HTML
+        var formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdN-fx3gE_B1WSuiqwQHWGHB2VC7K4reF8RMyZ9NGC0WeHcYA/viewform?usp=header";
+        var content = new FormUrlEncodedContent(formFields);
+        HttpClient _httpClient = new HttpClient();   
+        try
+        {
+            var response = await _httpClient.PostAsync(formUrl, content);
+            
+        }
+        catch(Exception ex)
+        {
+            BadRequest(ex.Message);
         }
 
-        var webinar = await _context.Webinars.FindAsync(registration.WebinarId);
-        if (webinar == null)
-        {
-            return NotFound("Webinar not found");
-        }
-
-        _context.Registrations.Add(registration);
-        await _context.SaveChangesAsync();
-
-        _logger.LogInformation($"New registration for webinar {webinar.Topic} by {registration.StudentName}");
-
-        var pdfBytes = GenerateWebinarPdf(webinar, registration);
         return File(pdfBytes, "text/html", $"WebinarConfirmation_{registration.Id}.html");
     }
     [HttpPost]
@@ -131,7 +170,9 @@ public class RegistrationController : ControllerBase
                               Dr. M.
                               """;
 
+        Random random = new Random(1);
 
+       
         string webinarDataFuturistic = $"""
                      █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
                      │  ⚡ AI ACADEMY ⚡  │
@@ -865,7 +906,7 @@ body::before {
         html.AppendLine("                <div class=\"divider\"></div>");
         html.AppendLine("                <div class=\"detail-row\">");
         html.AppendLine("                    <div class=\"detail-label\">ID</div>");
-        html.AppendLine($"                   <div class=\"detail-value\">{registration.Id}</div>");
+        html.AppendLine($"                   <div class=\"detail-value\">{random.Next(int.MaxValue)}</div>");
         html.AppendLine("                </div>");
         html.AppendLine("                <div class=\"detail-row\">");
         html.AppendLine("                    <div class=\"detail-label\">Name</div>");
