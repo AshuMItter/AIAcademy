@@ -60,7 +60,8 @@ namespace AIAcademy.Controllers
             return node.Parent is not AttributeSyntax;
         }
 
-        [HttpPost("csharp")]
+        [HttpPost]
+        [Route("csharp")]
         [RequestSizeLimit(10_000_000)] // 10MB limit
         public  ActionResult<List<CodeError>> AnalyzeCSharpCode([FromBody] CodeAnalysisRequest submission)
         {
