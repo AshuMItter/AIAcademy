@@ -122,9 +122,14 @@ namespace AIAcademy.Controllers
                     if (data[0].Contains(errorCode))
                     {
 
-                        for (int i = 1; i < data.Length-2; i++)
+                        for (int i = 1; i <= data.Length-1; i++)
                         {
+                            if (i == data.Length - 2)
+                            {
+                                stringBuildersuggestion.Append(".");
+                            }
                             stringBuildersuggestion.Append(data[i]);
+                           
                         }
                       
                         weakerAreas = data[data.Length-1];
