@@ -1,0 +1,3164 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Academy | Future of AI Education</title>
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <style>
+    /* Parallax Course Content Module */
+    #webgazerVideoContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 320px;
+            height: 240px;
+            border: 2px solid #333;
+        }
+        #gazeDot {
+            width: 20px;
+            height: 20px;
+            background: red;
+            border-radius: 50%;
+            position: absolute;
+            display: none;
+        }
+        .calibration-point {
+            width: 30px;
+            height: 30px;
+            background: #2196F3;
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+        }
+        #instructions {
+            margin: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+        }
+    .parallax-course-container {
+        perspective: 1000px;
+        height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        position: relative;
+    }
+    
+    .parallax-course-section {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform-style: preserve-3d;
+        z-index: 10;
+    }
+    
+    .course-content-layer {
+        position: absolute;
+        width: 80%;
+        max-width: 900px;
+        background: rgba(20, 20, 40, 0.9);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 0 30px rgba(138, 43, 226, 0.5);
+        border: 1px solid var(--neon-purple);
+        transform: translateZ(0);
+        transition: all 0.5s ease-out;
+    }
+    
+    .course-diagram-layer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateZ(-200px) scale(1.2);
+        transition: all 0.5s ease-out;
+    }
+    
+    .course-diagram {
+        width: 80%;
+        max-width: 600px;
+        height: auto;
+        opacity: 0.7;
+        filter: drop-shadow(0 0 20px rgba(0, 255, 252, 0.5));
+    }
+    
+    .course-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    .course-hours {
+        display: inline-block;
+        padding: 5px 15px;
+        background: rgba(188, 19, 254, 0.2);
+        border-radius: 20px;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        border: 1px solid var(--neon-purple);
+    }
+    
+    .module-list {
+        list-style-type: none;
+        padding-left: 0;
+    }
+    
+    .module-item {
+        position: relative;
+        padding: 15px;
+        margin-bottom: 15px;
+        background: rgba(30, 30, 60, 0.5);
+        border-left: 3px solid var(--neon-blue);
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .module-item:hover {
+        transform: translateX(10px);
+        background: rgba(30, 30, 60, 0.8);
+        box-shadow: 0 5px 15px rgba(0, 255, 252, 0.3);
+    }
+    
+    .module-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .module-title {
+        font-weight: 600;
+        margin-bottom: 0;
+        color: var(--neon-blue);
+    }
+    
+    .module-hours {
+        font-size: 0.8rem;
+        color: var(--neon-pink);
+    }
+    
+    .topic-list {
+        margin-top: 10px;
+        padding-left: 20px;
+        list-style-type: none;
+        display: none;
+    }
+    
+    .topic-item {
+        position: relative;
+        padding: 8px 0;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+    
+    .topic-item:last-child {
+        border-bottom: none;
+    }
+    
+    .topic-item::before {
+        content: "▹";
+        position: absolute;
+        left: -15px;
+        color: var(--neon-blue);
+    }
+    
+    .active .topic-list {
+        display: block;
+    }
+    
+    .parallax-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, rgba(11, 11, 41, 0.8), rgba(92, 12, 92, 0.6));
+        transform: translateZ(-500px);
+        z-index: 1;
+    }
+    
+    .parallax-nav {
+        position: fixed;
+        right: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 100;
+    }
+    
+    .parallax-dot {
+        display: block;
+        width: 12px;
+        height: 12px;
+        margin: 15px 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid var(--neon-blue);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .parallax-dot.active {
+        background: var(--neon-blue);
+        transform: scale(1.3);
+        box-shadow: 0 0 10px var(--neon-blue);
+    }
+    
+    /* Learning Path Visualization */
+    .learning-path {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .path-node {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--neon-blue);
+        box-shadow: 0 0 15px var(--neon-blue);
+        transform: translate(-50%, -50%);
+        z-index: 2;
+    }
+    
+    .path-connection {
+        position: absolute;
+        height: 2px;
+        background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+        transform-origin: left center;
+        z-index: 1;
+    }
+    
+    .path-label {
+        position: absolute;
+        color: white;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        transform: translateY(-50%);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .course-content-layer {
+            width: 90%;
+            padding: 20px;
+        }
+        
+        .course-title {
+            font-size: 2rem;
+        }
+        
+        .parallax-nav {
+            right: 15px;
+        }
+    }
+    /* Learning DNA Visualization Styles */
+    .dna-helix-container {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+    }
+    
+    #dnaCanvas {
+        display: block;
+        margin: 0 auto;
+        background: rgba(20, 20, 40, 0.3);
+        border-radius: 10px;
+    }
+    
+    .dna-node {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: all 0.5s ease;
+    }
+    
+    .dna-connection {
+        position: absolute;
+        height: 2px;
+        background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+        transform-origin: left center;
+    }
+    
+    /* Learning Path Module Styles */
+    .learning-module {
+        background: rgba(30, 30, 60, 0.5);
+        border-left: 3px solid var(--neon-purple);
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .learning-module:hover {
+        transform: translateX(5px);
+        box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+    }
+    
+    .module-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .module-title {
+        font-weight: 600;
+        color: var(--neon-blue);
+        margin-bottom: 0;
+    }
+    
+    .module-status {
+        font-size: 0.8rem;
+        padding: 3px 8px;
+        border-radius: 20px;
+    }
+    
+    .status-not-started {
+        background: rgba(255, 0, 255, 0.2);
+        color: var(--neon-pink);
+    }
+    
+    .status-in-progress {
+        background: rgba(188, 19, 254, 0.2);
+        color: var(--neon-purple);
+    }
+    
+    .status-completed {
+        background: rgba(0, 255, 252, 0.2);
+        color: var(--neon-blue);
+    }
+    
+    .module-topics {
+        margin-top: 10px;
+    }
+    
+    .topic-item {
+        display: flex;
+        align-items: center;
+        padding: 5px 0;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+    
+    .topic-item:last-child {
+        border-bottom: none;
+    }
+    
+    .topic-check {
+        margin-right: 10px;
+        color: var(--neon-blue);
+    }
+    
+    /* Assessment Question Styles */
+    .answer-option {
+        background: rgba(20, 20, 40, 0.7);
+        border: 1px solid rgba(188, 19, 254, 0.3);
+        border-radius: 5px;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .answer-option:hover {
+        background: rgba(30, 30, 60, 0.7);
+        border-color: var(--neon-blue);
+    }
+    
+    .answer-option.selected {
+        background: rgba(188, 19, 254, 0.2);
+        border-color: var(--neon-purple);
+        box-shadow: 0 0 10px rgba(188, 19, 254, 0.3);
+    }
+    
+    /* Difficulty Adjustment Styles */
+    .form-range::-webkit-slider-thumb {
+        background: var(--neon-purple);
+    }
+    
+    .form-range::-moz-range-thumb {
+        background: var(--neon-purple);
+    }
+    
+    .form-range::-ms-thumb {
+        background: var(--neon-purple);
+    }
+         /* Learning DNA Visualization Styles */
+    .dna-helix-container {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+    }
+    
+    #dnaCanvas {
+        display: block;
+        margin: 0 auto;
+        background: rgba(20, 20, 40, 0.3);
+        border-radius: 10px;
+    }
+    
+    .dna-node {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: all 0.5s ease;
+    }
+    
+    .dna-connection {
+        position: absolute;
+        height: 2px;
+        background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+        transform-origin: left center;
+    }
+    
+    /* Learning Path Module Styles */
+    .learning-module {
+        background: rgba(30, 30, 60, 0.5);
+        border-left: 3px solid var(--neon-purple);
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .learning-module:hover {
+        transform: translateX(5px);
+        box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+    }
+    
+    .module-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .module-title {
+        font-weight: 600;
+        color: var(--neon-blue);
+        margin-bottom: 0;
+    }
+    
+    .module-status {
+        font-size: 0.8rem;
+        padding: 3px 8px;
+        border-radius: 20px;
+    }
+    
+    .status-not-started {
+        background: rgba(255, 0, 255, 0.2);
+        color: var(--neon-pink);
+    }
+    
+    .status-in-progress {
+        background: rgba(188, 19, 254, 0.2);
+        color: var(--neon-purple);
+    }
+    
+    .status-completed {
+        background: rgba(0, 255, 252, 0.2);
+        color: var(--neon-blue);
+    }
+    
+    .module-topics {
+        margin-top: 10px;
+    }
+    
+    .topic-item {
+        display: flex;
+        align-items: center;
+        padding: 5px 0;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+    
+    .topic-item:last-child {
+        border-bottom: none;
+    }
+    
+    .topic-check {
+        margin-right: 10px;
+        color: var(--neon-blue);
+    }
+    
+    /* Assessment Question Styles */
+    .answer-option {
+        background: rgba(20, 20, 40, 0.7);
+        border: 1px solid rgba(188, 19, 254, 0.3);
+        border-radius: 5px;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .answer-option:hover {
+        background: rgba(30, 30, 60, 0.7);
+        border-color: var(--neon-blue);
+    }
+    
+    .answer-option.selected {
+        background: rgba(188, 19, 254, 0.2);
+        border-color: var(--neon-purple);
+        box-shadow: 0 0 10px rgba(188, 19, 254, 0.3);
+    }
+    
+    /* Difficulty Adjustment Styles */
+    .form-range::-webkit-slider-thumb {
+        background: var(--neon-purple);
+    }
+    
+    .form-range::-moz-range-thumb {
+        background: var(--neon-purple);
+    }
+    
+    .form-range::-ms-thumb {
+        background: var(--neon-purple);
+    }
+    
+    .form-check-input:checked {
+        background-color: var(--neon-purple);
+        border-color: var(--neon-purple);
+    }
+/* New AI Animation Styles */
+    
+    /* Floating AI Orbs */
+    .ai-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(30px);
+        opacity: 0.7;
+        animation: floatOrb 15s infinite ease-in-out;
+    }
+    
+    @keyframes floatOrb {
+        0%, 100% { transform: translate(0, 0); }
+        25% { transform: translate(50px, 30px); }
+        50% { transform: translate(20px, 60px); }
+        75% { transform: translate(-30px, 40px); }
+    }
+    
+    /* Neural Network Connections */
+    .neural-network {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    .neural-line {
+        position: absolute;
+        background: linear-gradient(90deg, rgba(0,255,252,0.1), rgba(188,19,254,0.3), rgba(0,255,252,0.1));
+        height: 1px;
+        transform-origin: left center;
+        animation: neuralPulse 3s infinite ease-in-out;
+    }
+    
+    @keyframes neuralPulse {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.8; }
+    }
+    
+    /* Holographic Typing Effect */
+    .holographic-text {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .holographic-text::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(transparent 0%, rgba(0,255,252,0.2) 50%, transparent 100%);
+        animation: hologramScan 4s infinite linear;
+    }
+    
+    @keyframes hologramScan {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(100%); }
+    }
+    
+    /* Data Stream Visualization */
+    .data-stream {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 0;
+    }
+    
+    .data-bit {
+        position: absolute;
+        color: rgba(0,255,252,0.7);
+        font-family: 'Courier New', monospace;
+        font-weight: bold;
+        animation: dataFall linear infinite;
+        text-shadow: 0 0 5px rgba(0,255,252,0.5);
+    }
+    
+    @keyframes dataFall {
+        to { transform: translateY(100vh); }
+    }
+    
+    /* AI Brain Visualization */
+    .ai-brain {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        margin: 0 auto;
+    }
+    
+    .brain-node {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--neon-blue);
+        box-shadow: 0 0 10px var(--neon-blue);
+        animation: brainPulse 2s infinite ease-in-out;
+    }
+    
+    .brain-connection {
+        position: absolute;
+        height: 2px;
+        background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+        transform-origin: left center;
+        animation: connectionPulse 3s infinite ease-in-out;
+    }
+    
+    @keyframes brainPulse {
+        0%, 100% { transform: scale(1); opacity: 0.7; }
+        50% { transform: scale(1.3); opacity: 1; }
+    }
+    
+    @keyframes connectionPulse {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.8; }
+    }
+    
+    /* Enhanced Interactive Hover Effects */
+    .interactive-card {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .interactive-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(0,255,252,0.1) 0%, transparent 70%);
+        transform: translate(var(--mouse-x), var(--mouse-y));
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    .interactive-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,255,252,0.3);
+    }
+    
+    /* Binary Rain Effect */
+    .binary-rain {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.1;
+    }
+
+
+        /* Webinar Topic Display Styles */
+/* Webinar Topic Display Styles */
+
+.webinar-topic-display {
+    position: relative;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+    overflow: hidden;
+}
+
+.topic-text-container {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.topic-text-main {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(var(--gradient-angle, 45deg), 
+        hsl(var(--hue, 200), 100%, 70%), 
+        hsl(calc(var(--hue, 200) + 60), 100%, 50%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1.2;
+    text-shadow: 0 0 10px hsla(var(--hue, 200), 100%, 50%, 0.3);
+    position: relative;
+    z-index: 2;
+}
+
+.topic-reflection {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(var(--gradient-angle, 45deg), 
+        hsl(var(--hue, 200), 100%, 70%), 
+        hsl(calc(var(--hue, 200) + 60), 100%, 50%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    transform: scaleY(-1);
+    opacity: 0.3;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+    z-index: 1;
+}
+
+/* Neon Button Styles */
+.btn-neon {
+    border: 1px solid hsl(var(--hue, 200), 100%, 50%);
+    background: transparent;
+    color: hsl(var(--hue, 200), 100%, 70%);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-neon:hover {
+    background: hsla(var(--hue, 200), 100%, 50%, 0.1);
+    box-shadow: 0 0 10px hsla(var(--hue, 200), 100%, 50%, 0.4);
+}
+
+/* Featured Card Effect */
+.featured-card {
+    border: 1px solid hsla(var(--hue), 100%, 50%, 0.3);
+    box-shadow: 0 0 20px hsla(var(--hue), 100%, 50%, 0.2);
+}
+.letter {
+    display: inline-block;
+    animation: floatLetter 3s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.1s);
+    filter: drop-shadow(0 0 5px hsla(var(--hue, 200), 100%, 50%, 0.7));
+    transform: translateY(0) rotate(0deg);
+}
+
+@keyframes floatLetter {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+/* Particle Effects */
+.particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.particles-container::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, 
+        hsla(var(--hue, 200), 100%, 50%, 0.1) 0%, 
+        transparent 70%);
+    animation: pulse 4s infinite alternate;
+    transform: scale(1);
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.8); opacity: 0.3; }
+    100% { transform: scale(1.2); opacity: 0.6; }
+}
+
+/* Button Styles */
+.btn-neon {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid hsl(var(--hue, 200), 100%, 50%);
+    background: transparent;
+    color: white;
+    z-index: 1;
+    transition: all 0.4s;
+    padding: 0.375rem 0.75rem;
+}
+
+.btn-content {
+    position: relative;
+    z-index: 2;
+}
+
+.btn-aura {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        hsla(var(--hue, 200), 100%, 50%, 0.3), 
+        hsla(calc(var(--hue, 200) + 60), 100%, 50%, 0.6));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.btn-neon:hover .btn-aura {
+    opacity: 1;
+    animation: auraPulse 2s infinite;
+}
+
+@keyframes auraPulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.05); opacity: 1; }
+}
+
+.pulse-on-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px hsla(var(--hue, 200), 100%, 50%, 0.4);
+}
+
+/* Featured Card Effect */
+.featured-card {
+    border: 1px solid hsla(var(--hue), 100%, 50%, 0.3);
+    box-shadow: 0 0 20px hsla(var(--hue), 100%, 50%, 0.2);
+    animation: featuredGlow 4s infinite alternate;
+}
+
+@keyframes featuredGlow {
+    0% { box-shadow: 0 0 20px hsla(var(--hue), 100%, 50%, 0.2); }
+    100% { box-shadow: 0 0 30px hsla(var(--hue), 100%, 50%, 0.4); }
+}
+         .ai-model-display {
+        transition: all 0.5s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        opacity: 0.9;
+    }
+    
+    .result-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-left: 3px solid var(--neon-purple);
+    }
+    
+    .result-card:hover {
+        transform: translateX(5px);
+        box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+    }
+    
+    .progress-bar-animated {
+        animation: progress-pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes progress-pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.7; }
+        100% { opacity: 1; }
+    }
+    
+    .text-pop {
+        animation: textPop 0.3s ease;
+    }
+    
+    @keyframes textPop {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    
+    .badge {
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+        font-weight: 600;
+    }
+
+/*Add this CSS to blur everything except the AI Performance Predictor  
+body {
+        position: relative;
+    }
+    
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(5px);
+        z-index: 1000;
+        pointer-events: none;  Allows clicking through the blur layer &
+    } 
+    */ 
+    /* Exclude the AI Performance Predictor section from the blur */
+    /*
+    #ai-model,
+    #webinars,
+    #webinars *,
+    #ai-model * {
+        backdrop-filter: none !important;
+      
+    }   
+
+    /*#predictBtn {
+    position: relative;
+    z-index: 1002; /* Higher than the blur layer} */
+
+    
+    /* Make sure the AI section appears above the blur layer */
+    #webinars,
+    #ai-model {
+        position: relative;
+        z-index: 1001;
+    }
+    
+    /* Keep the modal dialogs above the blur */
+    .modal-backdrop {
+    z-index: 1050 !important;
+}
+.modal {
+    z-index: 1060 !important;
+}
+    
+
+/* Webinar Topic Display Styles */
+.webinar-topic-display {
+    position: relative;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+    overflow: hidden;
+    perspective: 1000px;
+}
+
+.topic-text-container {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+}
+
+.topic-text-inner, .topic-reflection {
+    display: inline-block;
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(var(--gradient-angle), 
+        hsl(var(--hue), 100%, 70%), 
+        hsl(calc(var(--hue) + 60), 100%, 50%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+}
+
+.topic-reflection {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transform: scaleY(-1);
+    opacity: 0.3;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+}
+
+.letter {
+    display: inline-block;
+    animation: floatLetter 3s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.1s);
+    filter: drop-shadow(0 0 5px hsla(var(--hue), 100%, 50%, 0.7));
+}
+
+@keyframes floatLetter {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+/* Particle Effects */
+.particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.particles-container::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, 
+        hsla(var(--hue), 100%, 50%, 0.1) 0%, 
+        transparent 70%);
+    animation: pulse 4s infinite alternate;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.8); opacity: 0.3; }
+    100% { transform: scale(1.2); opacity: 0.6; }
+}
+
+/* Futuristic Button Styles */
+.btn-neon {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    background: transparent;
+    color: white;
+    z-index: 1;
+    transition: all 0.4s;
+}
+
+.btn-content {
+    position: relative;
+    z-index: 2;
+}
+
+.btn-aura {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        hsla(var(--hue), 100%, 50%, 0.3), 
+        hsla(calc(var(--hue) + 60), 100%, 50%, 0.6));
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.btn-neon:hover .btn-aura {
+    opacity: 1;
+    animation: auraPulse 2s infinite;
+}
+
+@keyframes auraPulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.05); opacity: 1; }
+}
+
+.pulse-on-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px hsla(var(--hue), 100%, 50%, 0.4);
+}
+
+/* Featured Card Effect */
+.featured-card {
+    border: 1px solid hsla(var(--hue), 100%, 50%, 0.3);
+    box-shadow: 0 0 20px hsla(var(--hue), 100%, 50%, 0.2);
+    animation: featuredGlow 4s infinite alternate;
+}
+
+@keyframes featuredGlow {
+    0% { box-shadow: 0 0 20px hsla(var(--hue), 100%, 50%, 0.2); }
+    100% { box-shadow: 0 0 30px hsla(var(--hue), 100%, 50%, 0.4); }
+}
+
+
+          /*___________________________________________________________________________*/
+        /* Add to your existing CSS */
+         .is-invalid {
+            border-color: #dc3545 !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+        .text-danger {
+           color: #dc3545 !important;
+          font-size: 0.875rem;
+}
+        :root {
+            --neon-blue: #0ff0fc;
+            --neon-pink: #ff00ff;
+            --neon-purple: #bc13fe;
+            --dark-bg: #0a0a1a;
+            --darker-bg: #050510;
+        }
+        
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background-color: var(--dark-bg);
+            color: #fff;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(11, 11, 41, 0.8) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(92, 12, 92, 0.6) 0%, transparent 20%);
+        }
+        
+        .navbar {
+            background: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(188, 19, 254, 0.3);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 1.8rem;
+        }
+        
+        .nav-link {
+            color: #fff !important;
+            position: relative;
+            margin: 0 10px;
+            font-weight: 500;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(188, 19, 254, 0.3);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn-neon {
+            background: transparent;
+            color: var(--neon-blue);
+            border: 2px solid var(--neon-blue);
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 252, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-neon:hover {
+            color: #fff;
+            box-shadow: 0 0 20px rgba(0, 255, 252, 0.6);
+            transform: translateY(-3px);
+        }
+        
+        .btn-neon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 252, 0.2), transparent);
+            transition: all 0.5s ease;
+        }
+        
+        .btn-neon:hover::before {
+            left: 100%;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            border-radius: 3px;
+        }
+        
+        .course-card {
+            background: rgba(20, 20, 40, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(188, 19, 254, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(188, 19, 254, 0.3);
+            border-color: var(--neon-purple);
+        }
+        
+        .course-card-header {
+            padding: 1.5rem;
+            background: linear-gradient(90deg, rgba(11, 11, 41, 0.8), rgba(92, 12, 92, 0.6));
+            border-bottom: 1px solid rgba(188, 19, 254, 0.3);
+        }
+        
+        .course-card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .course-card-body {
+            padding: 1.5rem;
+        }
+        
+        .webinar-section {
+            background: rgba(10, 10, 26, 0.7);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(188, 19, 254, 0.3);
+            border-bottom: 1px solid rgba(188, 19, 254, 0.3);
+        }
+        
+        .webinar-card {
+            background: rgba(20, 20, 40, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(188, 19, 254, 0.2);
+        }
+        
+        .webinar-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(188, 19, 254, 0.3);
+        }
+        
+        .webinar-media {
+            height: 200px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .webinar-media img, .webinar-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .ai-model-section {
+            background: linear-gradient(135deg, rgba(10, 10, 26, 0.9), rgba(30, 5, 60, 0.9));
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(188, 19, 254, 0.3);
+        }
+        
+        .ai-model-display {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 2rem;
+            font-family: 'Courier New', monospace;
+            border: 1px solid rgba(0, 255, 252, 0.2);
+            position: relative;
+        }
+        
+        .ai-model-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(0, 255, 252, 0.05), transparent);
+            pointer-events: none;
+        }
+
+        * {
+    animation-play-state: running !important;
+         }
+        
+        .form-control {
+            background: rgba(20, 20, 40, 0.7);
+            border: 1px solid rgba(188, 19, 254, 0.3);
+            color: #fff;
+            border-radius: 30px;
+            padding: 12px 20px;
+        }
+        
+        .form-control:focus {
+            background: rgba(30, 30, 60, 0.7);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 255, 252, 0.3);
+            color: #fff;
+        }
+        
+        footer {
+            background: rgba(10, 10, 26, 0.9);
+            border-top: 1px solid rgba(188, 19, 254, 0.3);
+            padding: 3rem 0;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 2rem;
+        }
+        
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(188, 19, 254, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+        
+        .glow {
+            text-shadow: 0 0 10px currentColor;
+        }
+        
+        .upload-area {
+            border: 2px dashed rgba(188, 19, 254, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--neon-pink);
+            background: rgba(188, 19, 254, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--neon-purple);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .course-card-title {
+                font-size: 1.3rem;
+            }
+        }
+        #video-container {
+            position: relative;
+            width: 640px;
+            height: 480px;
+        }
+        #video, #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+       
+    </style>
+</head>
+<body>
+    <!-- Floating Particles Background -->
+    <div class="floating-particles" id="particles-js"></div>
+    
+    <h1>Eye Tracking Demo</h1>
+    <div id="instructions">
+        Click on the blue dots to calibrate. Look around to see gaze tracking!
+    </div>
+    <div id="gazeDot"></div>
+    <!-- WebGazer elements will be added here automatically -->
+    <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
+    <script>
+        let calibrationPoints = [
+            {x: 0.1, y: 0.1},   // Top-left
+            {x: 0.9, y: 0.1},   // Top-right
+            {x: 0.5, y: 0.5},   // Center
+            {x: 0.1, y: 0.9},   // Bottom-left
+            {x: 0.9, y: 0.9}    // Bottom-right
+        ];
+        let currentCalibrationPoint = 0;
+
+        // Initialize WebGazer
+        webgazer.setRegression('ridge')
+               .setTracker('TFFacemesh')
+               .setGazeListener(function(data, elapsedTime) {
+                   if (data) {
+                       const gazeDot = document.getElementById('gazeDot');
+                       gazeDot.style.display = 'block';
+                       gazeDot.style.left = (data.x - 10) + 'px';
+                       gazeDot.style.top = (data.y - 10) + 'px';
+                   }
+               })
+               .begin()
+               .showPredictionPoints(true);
+
+        // Set up calibration
+        function createCalibrationPoint(x, y) {
+            const point = document.createElement('div');
+            point.className = 'calibration-point';
+            point.style.left = (window.innerWidth * x - 15) + 'px';
+            point.style.top = (window.innerHeight * y - 15) + 'px';
+            
+            point.addEventListener('click', function() {
+                webgazer.addCalibrationPoint(
+                    window.innerWidth * x,
+                    window.innerHeight * y,
+                    currentCalibrationPoint,
+                    this
+                );
+                
+                if(currentCalibrationPoint < calibrationPoints.length-1) {
+                    currentCalibrationPoint++;
+                    createNextCalibrationPoint();
+                } else {
+                    document.querySelectorAll('.calibration-point').forEach(p => p.remove());
+                }
+            });
+            
+            document.body.appendChild(point);
+        }
+
+        function createNextCalibrationPoint() {
+            createCalibrationPoint(
+                calibrationPoints[currentCalibrationPoint].x,
+                calibrationPoints[currentCalibrationPoint].y
+            );
+        }
+
+        // Start calibration when user clicks
+        document.getElementById('instructions').addEventListener('click', () => {
+            createNextCalibrationPoint();
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            webgazer.params.videoViewerWidth = 320;
+            webgazer.params.videoViewerHeight = 240;
+            webgazer.resize();
+        });
+
+        // Remove video container if needed
+        window.onbeforeunload = function() {
+            webgazer.end();
+        }
+    </script>
+
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-robot me-2"></i>AI Academy
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#courses">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#webinars">Webinars</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ai-model">AI Model</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content">
+                    <h1 class="hero-title animate__animated animate__fadeInDown">Master Artificial Intelligence</h1>
+                    <p class="hero-subtitle animate__animated animate__fadeIn animate__delay-1s">Learn to use and create cutting-edge AI technologies with our expert-led courses and hands-on projects.</p>
+                    <div class="animate__animated animate__fadeIn animate__delay-2s">
+                        <a href="#courses" class="btn btn-neon me-3">Explore Courses</a>
+                        <a href="#webinars" class="btn btn-neon btn-outline">Join Webinar</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block animate__animated animate__fadeInRight animate__delay-1s">
+                    <div class="position-relative">
+                        <div class="ai-orb" style="width: 100%; height: 400px; background: radial-gradient(circle, rgba(0,255,252,0.2) 0%, rgba(188,19,254,0.2) 100%); border-radius: 50%; filter: blur(50px);"></div>
+                        <img src="https://via.placeholder.com/600x400/0a0a1a/ffffff?text=AI+Future" alt="AI Future" class="img-fluid rounded-4 position-relative" style="z-index: 2; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Courses Section -->
+   <!-- Courses Section -->
+<section id="courses" class="py-5">
+    
+    <div class="container">
+        
+        <h2 class="section-title text-center mb-5">Our <span class="glow" style="color: var(--neon-blue);">Courses</span></h2>
+        <div class="row g-4">
+            <!-- Use AI Course -->
+            <div class="col-lg-4">
+                <div class="course-card h-100">
+                    <div class="course-card-header">
+                        <h3 class="course-card-title">Use AI</h3>
+                        <p class="text-light mb-0">Master AI applications in real-world scenarios</p>
+                    </div>
+                    <div class="course-card-body">
+                        <p class="mb-4">Learn how to effectively implement and utilize existing AI technologies in various industries and applications.</p>
+                        <ul class="mb-4">
+                            <li>AI Tools and Frameworks</li>
+                            <li>Data Analysis with AI</li>
+                            <li>AI for Business Solutions</li>
+                            <li>Ethical AI Implementation</li>
+                            <li>Case Studies and Projects</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-neon" data-bs-toggle="modal" data-bs-target="#registerModal" data-course="Use AI">Register Now</a>
+                            <a href="#" class="btn btn-sm btn-outline-light download-syllabus" data-course="use-ai">Download Syllabus</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Create AI Course -->
+            <div class="col-lg-4">
+                <div class="course-card h-100">
+                    <div class="course-card-header">
+                        <h3 class="course-card-title">Create AI with C# and TorchSharp</h3>
+                        <p class="text-light mb-0">Build your own AI models from scratch</p>
+                    </div>
+                    <div class="course-card-body">
+                        <p class="mb-4">Dive deep into AI development, from fundamental algorithms to advanced neural network architectures.</p>
+                        <ul class="mb-4">
+                            <li>Machine Learning Fundamentals</li>
+                            <li>Deep Learning Architectures</li>
+                            <li>Natural Language Processing</li>
+                            <li>Computer Vision</li>
+                            <li>AI Model Deployment</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-neon" data-bs-toggle="modal" data-bs-target="#registerModal" data-course="Create AI">Register Now</a>
+                            <a href="#" class="btn btn-sm btn-outline-light download-syllabus" data-course="create-ai">Download Syllabus</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ML with Python & TensorFlow Course -->
+            <div class="col-lg-4">
+                <div class="course-card h-100">
+                    <div class="course-card-header">
+                        <h3 class="course-card-title">Create AI with Python & TensorFlow</h3>
+                        <p class="text-light mb-0">Hands-on machine learning with industry-standard tools</p>
+                    </div>
+                    <div class="course-card-body">
+                        <p class="mb-4">Master practical machine learning techniques using Python and TensorFlow to build, train, and deploy models.</p>
+                        <ul class="mb-4">
+                            <li>Python for Data Science</li>
+                            <li>TensorFlow Fundamentals</li>
+                            <li>Neural Networks Implementation</li>
+                            <li>Model Training & Optimization</li>
+                            <li>Real-world ML Pipelines</li>
+                            <li>TensorFlow Serving & Deployment</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-neon" data-bs-toggle="modal" data-bs-target="#registerModal" data-course="ML with Python & TensorFlow">Register Now</a>
+                            <a href="#" class="btn btn-sm btn-outline-light download-syllabus" data-course="ml-python-tensorflow">Download Syllabus</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</section>
+   <!-- Webinars Section -->
+<section id="webinars" class="webinar-section py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Free <span class="glow" style="color: var(--neon-pink);">Webinars</span></h2>
+        
+        <!-- Loading spinner -->
+        <div id="webinarLoading" class="text-center py-5">
+            <div class="spinner-border text-neon" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading upcoming webinars...</p>
+        </div>
+        
+        <!-- Current/Featured Webinars -->
+        <div class="row mb-5" id="upcomingWebinars">
+            <!-- Webinars will be loaded here dynamically -->
+        </div>
+        
+        <!-- Past Webinars -->
+        <h3 class="text-center mb-4" style="color: var(--neon-blue);">Past Webinars</h3>
+        <div class="row" id="pastWebinars">
+            <!-- Past webinars will be loaded here dynamically -->
+        </div>
+    </div>
+</section>
+
+<!-- Webinar Registration Modal -->
+ 
+<div class="modal fade" id="webinarModal" style="z-index: 200;"  tabindex="-1" aria-labelledby="webinarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="z-index: 3001;">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-neon">
+                <h5 class="modal-title" id="webinarModalLabel">Register for Webinar</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="registrationForm" ">
+                    <input type="hidden" id="webinarId">
+                    <div class="mb-3">
+                        <label for="studentName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control bg-dark text-light" id="studentName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control bg-dark text-light" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone (Optional)</label>
+                        <input type="tel" class="form-control bg-dark text-light" id="phone">
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-neon">Register</button>
+                    </div>
+                </form>
+                <div id="registrationSuccess" class="text-center py-4" style="display: none;">
+                    <i class="fas fa-check-circle text-success mb-3" style="font-size: 3rem;"></i>
+                    <h4>Registration Successful!</h4>
+                    <p>Your confirmation is being prepared...</p>
+                    <div class="spinner-border text-primary mt-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <!-- AI Model Section -->
+    <section id="ai-model" class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Anash AI <span class="glow" style="color: var(--neon-purple);">Performance Predictor</span></h2>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="ai-model-section">
+                        <div class="row">
+                            <div class="col-md-6 mb-4 mb-md-0">
+                                <h4 class="mb-4">Predict Your Study Requirements</h4>
+                                <p>Our AI model Anash (v1) analyzes hundreds of data points to predict the hours needed/week to achieve your target score.</p>
+                                
+                                <div class="mb-3">
+                                    <label for="targetScore" class="form-label">Enter Your Target Score (0-100)</label>
+                                    <input type="number" class="form-control" id="targetScore" min="0" max="100" value="90">
+                                    <div class="error-display text-danger mt-2"></div>
+                                </div>
+                                
+                                <button id="predictBtn" class="btn btn-neon w-100">
+                                    <span class="btn-text">Predict Hours Needed</span>
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="ai-model-display p-4 rounded-3" style="background: rgba(30, 10, 50, 0.7); border: 1px solid var(--neon-purple); box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);">
+                                    <div class="ai-visualization">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h4 class="mb-0" style="color: var(--neon-blue);">Prediction Results</h4>
+                                            <div class="spinner-border text-primary spinner-border-sm d-none" id="loadingSpinner" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="result-card mb-3 p-3 rounded-2" style="background: rgba(20, 5, 40, 0.5);">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>Target Score:</span>
+                                                <span class="fw-bold" id="displayScore" style="color: var(--neon-green);">--</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="result-card mb-3 p-3 rounded-2" style="background: rgba(20, 5, 40, 0.5);">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>Weekly Study Hours:</span>
+                                                <span class="fw-bold" id="displayHours" style="color: var(--neon-pink);">--</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="progress mb-4" style="height: 10px; background: rgba(255, 255, 255, 0.1);">
+                                            <div id="scoreProgress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%; background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));"></div>
+                                        </div>
+                                        
+                                        <div class="model-stats">
+                                            <div class="stat-item d-flex justify-content-between mb-2">
+                                                <span>Model Confidence:</span>
+                                                <span id="displayConfidence" class="badge rounded-pill" style="background-color: var(--neon-purple);">--</span>
+                                            </div>
+                                            <div class="stat-item d-flex justify-content-between mb-2">
+                                                <span>Data Points Analyzed:</span>
+                                                <span id="displayDataPoints">--</span>
+                                            </div>
+                                            <div class="stat-item d-flex justify-content-between">
+                                                <span>Recommended Plan:</span>
+                                                <span id="displayPlan" class="badge rounded-pill" style="background-color: var(--neon-blue);">--</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-4 pt-3 border-top border-secondary">
+                                            <small class="text-muted" id="regressionEquation">Based on analysis of similar students' performance patterns</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Get In <span class="glow" style="color: var(--neon-blue);">Touch</span></h2>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <form id="contactForm" class="needs-validation" novalidate>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="name" required>
+                                <div class="invalid-feedback">
+                                    Please provide your name.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" required>
+                                <div class="invalid-feedback">
+                                    Please provide a valid email.
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="subject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="subject" required>
+                                <div class="invalid-feedback">
+                                    Please provide a subject.
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" rows="5" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please write your message.
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-neon px-5">Send Message</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="mb-4"><i class="fas fa-robot me-2"></i>AI Academy</h5>
+                    <p>Empowering the next generation of AI professionals through cutting-edge education and practical training.</p>
+                    <div class="social-icons mt-4">
+                        <a href="#" class="text-light me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5 class="mb-4">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#courses" class="text-light">Courses</a></li>
+                        <li class="mb-2"><a href="#webinars" class="text-light">Webinars</a></li>
+                        <li class="mb-2"><a href="#ai-model" class="text-light">AI Model</a></li>
+                        <li class="mb-2"><a href="#contact" class="text-light">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="mb-4">Courses</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-light">Use AI</a></li>
+                        <li class="mb-2"><a href="#" class="text-light">Create AI</a></li>
+                        <li class="mb-2"><a href="#" class="text-light">Advanced Modules</a></li>
+                        <li class="mb-2"><a href="#" class="text-light">Certification</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="mb-4">Newsletter</h5>
+                    <p>Subscribe to get updates on new courses and webinars.</p>
+                    <form class="mt-3">
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Your Email" aria-label="Your Email">
+                            <button class="btn btn-neon" type="button">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <div class="whatsapp-contact">
+                    <i class="fab fa-whatsapp me-2"></i> +91 9311878122
+                </div>
+                <div class="dr-m-signature">
+                    <span class="text-light">Dr. M</span>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4 pt-3 border-top border-secondary">
+                <p class="mb-0">&copy; 2024 AI Academy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Course Registration Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark border border-primary">
+                <div class="modal-header border-bottom border-primary">
+                    <h5 class="modal-title" id="registerModalTitle">Course Registration</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="courseRegistrationForm">
+                        <input type="hidden" id="selectedCourse">
+                        <div class="mb-3">
+                            <label for="regName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="regName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="regEmail" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="regEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="regPhone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="regPhone">
+                        </div>
+                        <div class="mb-3">
+                            <label for="regExperience" class="form-label">AI Experience Level</label>
+                            <select class="form-select" id="regExperience">
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-top border-primary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-neon" id="submitRegistration">Register Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="sound-toggle position-fixed bottom-0 end-0 m-3">
+        <button id="soundToggle" class="btn btn-neon btn-sm">
+            <i class="fas fa-volume-up"></i> Sound On
+        </button>
+    </div>
+    <!-- Add this in the body where you want the parallax course content -->
+
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <!-- Custom JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        
+    <script>
+        // Initialize particles
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+          //  alert("Hello World top");
+            // Set up course registration modal
+            var registerModal = document.getElementById('registerModal');
+            registerModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var course = button.getAttribute('data-course');
+                document.getElementById('selectedCourse').value = course;
+                document.getElementById('registerModalTitle').textContent = 'Register for ' + course;
+            });
+            
+            // Course registration form submission
+            document.getElementById('submitRegistration').addEventListener('click', function() {
+                var form = document.getElementById('courseRegistrationForm');
+                if (form.checkValidity()) {
+                    var course = document.getElementById('selectedCourse').value;
+                    var name = document.getElementById('regName').value;
+                    var email = document.getElementById('regEmail').value;
+                    
+                    // In a real application, you would send this data to your server
+                    console.log('Course Registration:', {
+                        course: course,
+                        name: name,
+                        email: email,
+                        phone: document.getElementById('regPhone').value,
+                        experience: document.getElementById('regExperience').value
+                    });
+                    
+                    alert('Thank you, ' + name + '! Your registration for ' + course + ' has been received.');
+                    var modal = bootstrap.Modal.getInstance(registerModal);
+                    modal.hide();
+                } else {
+                    form.classList.add('was-validated');
+                }
+            });
+
+          
+            
+            // // Webinar registration form submission
+            // document.getElementById('submitWebinarRegistration').addEventListener('click', function() {
+            //     var form = document.getElementById('webinarRegistrationForm');
+            //     if (form.checkValidity()) {
+            //         var name = document.getElementById('webinarName').value;
+            //         var email = document.getElementById('webinarEmail').value;
+                    
+            //         // In a real application, you would send this data to your server
+            //         console.log('Webinar Registration:', {
+            //             name: name,
+            //             email: email,
+            //             date: document.getElementById('webinarDate').value,
+            //             updates: document.getElementById('webinarUpdates').checked
+            //         });
+                    
+            //         alert('Thank you, ' + name + '! Your webinar registration has been received. We will send details to ' + email);
+            //         var modal = bootstrap.Modal.getInstance(document.getElementById('webinarModal'));
+            //         modal.hide();
+            //     } else {
+            //         form.classList.add('was-validated');
+            //     }
+            // });
+
+           // alert("Hello World LowerAbove");   
+            // ________________________________________________________________________________
+            // Syllabus download
+            document.querySelectorAll('.download-syllabus').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var course = this.getAttribute('data-course');
+                    alert('Downloading syllabus for ' + course + ' course...');
+                    // In a real application, this would trigger a file download
+                });
+            });
+            
+           
+          
+// AI Model Prediction
+
+// Initialize error display element
+// Initialize error display element
+const targetScoreInput = document.getElementById('targetScore');
+const errorDisplay = targetScoreInput.parentNode.querySelector('.error-display');
+
+// Display elements
+const displayScore = document.getElementById('displayScore');
+const displayHours = document.getElementById('displayHours');
+const scoreProgress = document.getElementById('scoreProgress');
+const displayConfidence = document.getElementById('displayConfidence');
+const displayDataPoints = document.getElementById('displayDataPoints');
+const displayPlan = document.getElementById('displayPlan');
+const regressionEquation = document.getElementById('regressionEquation');
+const predictBtn = document.getElementById('predictBtn');
+const loadingSpinner = document.getElementById('loadingSpinner');
+const btnText = predictBtn.querySelector('.btn-text');
+
+// Real-time validation on input change
+targetScoreInput.addEventListener('input', function() {
+    validateInput();
+});
+
+
+
+
+
+// Click handler for predict button
+predictBtn.addEventListener('click', async function() {
+    // Validate input first
+    if (!validateInput()) {
+        return;
+    }
+
+    const targetScore = parseInt(targetScoreInput.value);
+
+    // Show loading state
+    predictBtn.disabled = true;
+    btnText.textContent = 'Predicting...';
+    loadingSpinner.classList.remove('d-none');
+    
+    // Pulse animation on the display
+    document.querySelector('.ai-model-display').style.animation = 'pulse 0.5s ease';
+    
+    try {
+        // Make API call
+        const response = await fetch(`https://pure-mariann-learnataiacademy-9c8539e8.koyeb.app/api/StudyHours/predict-hours?targetScore=${targetScore}`);
+        
+        if (!response.ok) {
+            throw new Error(`API request failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        // Update display with API data
+        updateDisplay(targetScore, data);
+        
+    } catch (error) {
+        console.error('Error fetching prediction:', error);
+        displayError(error);
+    } finally {
+        // Restore button state
+        predictBtn.disabled = false;
+        btnText.textContent = 'Predict Hours Needed';
+        loadingSpinner.classList.add('d-none');
+        document.querySelector('.ai-model-display').style.animation = '';
+    }
+})
+//alert("Hello World");
+function updateDisplay(targetScore, data) {
+    // Update main metrics with animation
+    displayScore.textContent = targetScore;
+    displayHours.textContent = data.predictedHours.toFixed(1);
+    scoreProgress.style.width = `${targetScore}%`;
+    
+    // Add visual feedback
+    displayScore.classList.add('text-pop');
+    displayHours.classList.add('text-pop');
+    
+    setTimeout(() => {
+        displayScore.classList.remove('text-pop');
+        displayHours.classList.remove('text-pop');
+    }, 500);
+    
+    // Update model stats
+    displayDataPoints.textContent = data.dataPointsUsed;
+    regressionEquation.textContent = `Model: ${data.regressionEquation} | R²: ${data.rSquared.toFixed(3)}`;
+    
+    // Determine confidence level based on R-squared
+    let confidenceText, confidenceColor;
+    if (data.rSquared > 0.7) {
+        confidenceText = "High";
+        confidenceColor = "var(--neon-green)";
+    } else if (data.rSquared > 0.4) {
+        confidenceText = "Medium";
+        confidenceColor = "var(--neon-yellow)";
+    } else {
+        confidenceText = "Low";
+        confidenceColor = "var(--neon-pink)";
+    }
+    displayConfidence.textContent = confidenceText;
+    displayConfidence.style.backgroundColor = confidenceColor;
+    
+    // Determine recommended plan
+    let planText, planColor;
+    if (targetScore > 85) {
+        planText = "Intensive";
+        planColor = "var(--neon-purple)";
+    } else if (targetScore > 70) {
+        planText = "Balanced";
+        planColor = "var(--neon-blue)";
+    } else {
+        planText = "Basic";
+        planColor = "var(--neon-cyan)";
+    }
+    displayPlan.textContent = planText;
+    displayPlan.style.backgroundColor = planColor;
+}
+
+function displayError(error) {
+    // Show error in the display
+    displayScore.textContent = "Error";
+    displayHours.textContent = "--";
+    scoreProgress.style.width = "0%";
+    displayConfidence.textContent = "N/A";
+    displayConfidence.style.backgroundColor = "var(--bs-danger)";
+    displayDataPoints.textContent = "--";
+    displayPlan.textContent = "N/A";
+    displayPlan.style.backgroundColor = "var(--bs-danger)";
+    regressionEquation.textContent = `Error: ${error.message}`;
+}
+
+// Validation function (reused for both input and button click)
+function validateInput() {
+    const value = targetScoreInput.value;
+    const numValue = parseInt(value);
+    
+    // Clear previous errors
+    errorDisplay.textContent = '';
+    targetScoreInput.classList.remove('is-invalid');
+
+    // Validation checks
+    if (value.trim() === '') {
+        errorDisplay.textContent = 'Please enter a target score';
+        targetScoreInput.classList.add('is-invalid');
+        return false;
+    }
+
+    if (isNaN(numValue)) {
+        errorDisplay.textContent = 'Please enter a valid number';
+        targetScoreInput.classList.add('is-invalid');
+        return false;
+    }
+
+    if (numValue <= 0) {
+        errorDisplay.textContent = 'Score cannot be negative or zero';
+        targetScoreInput.classList.add('is-invalid');
+        return false;
+    }
+
+    if (numValue > 100) {
+        errorDisplay.textContent = 'Score cannot be greater than 100';
+        targetScoreInput.classList.add('is-invalid');
+        return false;
+    }
+
+    return true; // Input is valid
+}
+         
+            // Contact form submission
+            document.getElementById('contactForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (this.checkValidity()) {
+                    // Simulate form submission
+                    setTimeout(function() {
+                        alert('Thank you for your message! We will get back to you soon.');
+                        document.getElementById('contactForm').reset();
+                        document.getElementById('contactForm').classList.remove('was-validated');
+                    }, 500);
+                }
+                
+                this.classList.add('was-validated');
+            });
+            
+            // Load some past webinars
+            loadPastWebinars();
+        });
+        
+        function createParticles() {
+            const container = document.getElementById('particles-js');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 1px and 3px
+                const size = Math.random() * 2 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random color
+                const colors = ['rgba(188, 19, 254, 0.5)', 'rgba(0, 255, 252, 0.5)', 'rgba(255, 0, 255, 0.5)'];
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Animation
+                const duration = Math.random() * 20 + 10;
+                particle.style.animation = `float ${duration}s linear infinite`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        function loadPastWebinars() {
+            const pastWebinars = [
+                {
+                    title: "AI in Healthcare: Revolutionizing Diagnostics",
+                    date: "March 23, 2024",
+                    image: "https://via.placeholder.com/300x200/0a0a1a/ffffff?text=AI+Healthcare"
+                },
+                {
+                    title: "Generative AI: Beyond ChatGPT",
+                    date: "March 16, 2024",
+                    image: "https://via.placeholder.com/300x200/0a0a1a/ffffff?text=Generative+AI"
+                },
+                {
+                    title: "Ethical Considerations in AI Development",
+                    date: "March 9, 2024",
+                    image: "https://via.placeholder.com/300x200/0a0a1a/ffffff?text=AI+Ethics"
+                }
+            ];
+            
+            const container = document.getElementById('pastWebinars');
+            
+            pastWebinars.forEach(webinar => {
+                const col = document.createElement('div');
+                col.className = 'col-md-4 mb-4';
+                
+                col.innerHTML = `
+                    <div class="webinar-card h-100">
+                        <div class="webinar-media">
+                            <img src="${webinar.image}" alt="${webinar.title}" class="img-fluid">
+                        </div>
+                        <div class="p-3">
+                            <h5 class="mb-1">${webinar.title}</h5>
+                            <p class="text-muted small mb-2">${webinar.date}</p>
+                            <button class="btn btn-outline-light btn-sm">Watch Recording</button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(col);
+            });
+        }
+        
+        function addPastWebinar(filename) {
+            const container = document.getElementById('pastWebinars');
+            
+            // Create a simple filename-based title
+            const title = filename.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+            const date = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            const col = document.createElement('div');
+            col.className = 'col-md-4 mb-4';
+            
+            col.innerHTML = `
+                <div class="webinar-card h-100">
+                    <div class="webinar-media">
+                        <img src="https://via.placeholder.com/300x200/0a0a1a/ffffff?text=New+Webinar" alt="${title}" class="img-fluid">
+                    </div>
+                    <div class="p-3">
+                        <h5 class="mb-1">${title}</h5>
+                        <p class="text-muted small mb-2">${date}</p>
+                        <button class="btn btn-outline-light btn-sm">Watch Recording</button>
+                    </div>
+                </div>
+            `;
+            
+            // Insert at the beginning
+            container.insertBefore(col, container.firstChild);
+        }
+
+
+
+
+        // ___________Webinar ___________________________________
+        // Global variable to store current webinar for registration
+        let currentWebinar = null;
+
+// Fetch webinars from API
+document.addEventListener('DOMContentLoaded', function() {
+    fetchWebinars();
+    
+    // Setup form submission
+    document.getElementById('registrationForm').addEventListener('submit', handleRegistration);
+});
+
+function fetchWebinars() {
+    fetch('https://pure-mariann-learnataiacademy-9c8539e8.koyeb.app/api/Registration')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(webinars => {
+            document.getElementById('webinarLoading').style.display = 'none';
+            renderWebinars(webinars);
+        })
+        .catch(error => {
+            console.error('Error fetching webinars:', error);
+            document.getElementById('webinarLoading').innerHTML = `
+                <div class="alert alert-danger">
+                    Failed to load webinars. Please try again later.
+                    <button onclick="fetchWebinars()" class="btn btn-sm btn-outline-light ms-3">Retry</button>
+                </div>
+            `;
+        });
+}
+
+function renderWebinars(webinars) {
+    const upcomingContainer = document.getElementById('upcomingWebinars');
+    const pastContainer = document.getElementById('pastWebinars');
+    
+    // Clear existing content
+    upcomingContainer.innerHTML = '';
+    pastContainer.innerHTML = '';
+    
+    // Separate upcoming and past webinars
+    const now = new Date();
+    const upcoming = [];
+    const past = [];
+    
+    webinars.forEach(webinar => {
+        const webinarDate = new Date(webinar.date);
+        if (webinarDate >= now) {
+            upcoming.push(webinar);
+        } else {
+            past.push(webinar);
+        }
+    });
+    
+    // Render upcoming webinars
+    if (upcoming.length > 0) {
+        upcoming.forEach((webinar, index) => {
+            const isFeatured = index < 2; // First two are featured
+            const colClass = isFeatured ? 'col-lg-6 mb-4 mb-lg-0' : 'col-md-4 mb-4';
+            
+            const webinarCard = createWebinarCard(webinar, isFeatured);
+            const col = document.createElement('div');
+            col.className = colClass;
+            col.innerHTML = webinarCard;
+            col.querySelector('.register-btn').addEventListener('click', () => prepareRegistration(webinar));
+            
+            if (isFeatured) {
+                upcomingContainer.appendChild(col);
+            } else {
+                // If we have more than 2 upcoming, we might want a separate row
+                if (!upcomingContainer.querySelector('.row.mt-4')) {
+                    const newRow = document.createElement('div');
+                    newRow.className = 'row mt-4';
+                    upcomingContainer.appendChild(newRow);
+                }
+                upcomingContainer.querySelector('.row.mt-4').appendChild(col);
+            }
+        });
+    } else {
+        upcomingContainer.innerHTML = `
+            <div class="col-12 text-center py-4">
+                <p class="text-muted">No upcoming webinars scheduled. Check back later!</p>
+            </div>
+        `;
+    }
+    
+    // Render past webinars
+    if (past.length > 0) {
+        past.forEach(webinar => {
+            const col = document.createElement('div');
+            col.className = 'col-md-4 mb-4';
+            col.innerHTML = createPastWebinarCard(webinar);
+            pastContainer.appendChild(col);
+        });
+    } else {
+        pastContainer.innerHTML = `
+            <div class="col-12 text-center py-4">
+                <p class="text-muted">No past webinars to display.</p>
+            </div>
+        `;
+    }
+}
+
+function createWebinarCard(webinar, isFeatured = true) {
+    const date = new Date(webinar.date);
+    const formattedDate = date.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        month: 'long', 
+        day: 'numeric', 
+        year: 'numeric' 
+    });
+    
+    const timeString = webinar.time || 'Time TBD';
+    const gradientAngle = (webinar.topic.length * 15) % 360;
+    const hue = (webinar.topic.length * 10) % 360;
+    
+    // Create futuristic text display for the topic
+    const mediaContent = `
+        <div class="webinar-topic-display" 
+             style="--gradient-angle: ${gradientAngle}deg;
+                   --hue: ${hue}">
+            <div class="topic-text-container">
+                <div class="topic-text-main">
+                    ${webinar.topic}
+                </div>
+                <div class="topic-reflection">
+                    ${webinar.topic}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    return `
+        <div class="webinar-card h-100 ${isFeatured ? 'featured-card' : ''}" data-hue="${hue}">
+            <div class="webinar-media">
+                ${mediaContent}
+            </div>
+            <div class="p-4">
+                <h4>${webinar.topic}</h4>
+                <p class="text-muted">${formattedDate} at ${timeString}</p>
+                <p>${webinar.description || 'Join us for an informative session on this topic.'}</p>
+                ${webinar.speaker ? `<p class="text-neon"><small>Speaker: ${webinar.speaker}</small></p>` : ''}
+                <button class="btn btn-neon btn-sm register-btn" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#webinarModal"
+                        data-webinar-id="${webinar.id || ''}">
+                    Register Now
+                </button>
+            </div>
+        </div>
+    `;
+}
+function createPastWebinarCard(webinar) {
+    const date = new Date(webinar.date);
+    const formattedDate = `Recorded: ${date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric' 
+    })}`;
+    
+    return `
+        <div class="webinar-card past-webinar h-100">
+            <div class="webinar-media">
+                <img src="https://via.placeholder.com/400x225/0a0a1a/ffffff?text=Past+Webinar" 
+                     alt="Past webinar" class="img-fluid">
+                <div class="play-icon">
+                    <i class="fas fa-play"></i>
+                </div>
+            </div>
+            <div class="p-3">
+                <h5>${webinar.topic}</h5>
+                <p class="text-muted small">${formattedDate}</p>
+            </div>
+        </div>
+    `;
+}
+
+function prepareRegistration(webinar) {
+    currentWebinar = webinar;
+    document.getElementById('webinarId').value = webinar.id;
+    document.getElementById('webinarModalLabel').textContent = `Register for: ${webinar.topic}`;
+    
+    // Reset form
+    document.getElementById('registrationForm').reset();
+    document.getElementById('registrationForm').style.display = 'block';
+    document.getElementById('registrationSuccess').style.display = 'none';
+}
+
+function handleRegistration(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    let formData = {
+        webinarId: currentWebinar.id,
+        studentName: document.getElementById('studentName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value || null
+    };
+    
+    // Show loading state
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Registering...';
+    
+    // Send registration data
+    fetch('https://pure-mariann-learnataiacademy-9c8539e8.koyeb.app/api/Registration/webinar-registration', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(async response => {
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Registration failed');
+        }
+        
+        // Get the blob data
+        return response.blob();
+    })
+    .then(blob => {
+        // Create a download link for the blob
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        
+        // Set the filename for the download
+        // You might want to get this from the response headers if available
+        a.download = formData.studentName+'_'+'registration_confirmation.html';
+        
+        document.body.appendChild(a);
+        a.click();
+        
+        // Clean up
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        // Hide form, show success message
+        form.style.display = 'none';
+        document.getElementById('registrationSuccess').style.display = 'block';
+        
+        // Close modal after delay
+        setTimeout(() => {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('webinarModal'));
+            if (modal) {
+                modal.hide();
+            }
+            
+            // Reset form and button state after modal is closed
+            form.style.display = 'block';
+            document.getElementById('registrationSuccess').style.display = 'none';
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+        }, 3000);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert(error.message || 'Registration failed. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+    });
+}
+
+
+    </script>
+    <script>
+     
+        // Sound effects configuration with properly hosted audio files
+        const sounds = {
+            hover: new Howl({
+                src: ['https://www.soundjay.com/buttons/sounds/button-09.mp3'],
+                volume: 0.3
+            }),
+            click: new Howl({
+                src: ['https://www.soundjay.com/buttons/sounds/button-10.mp3'],
+                volume: 0.5
+            }),
+            success: new Howl({
+                src: ['https://www.soundjay.com/buttons/sounds/button-21.mp3'],
+                volume: 0.4
+            }),
+            error: new Howl({
+                src: ['https://www.soundjay.com/buttons/sounds/button-05.mp3'],
+                volume: 0.3
+            }),
+            futuristic: new Howl({
+                src: ['https://www.soundjay.com/mechanical/sounds/alien-siren-01.mp3'],
+                volume: 0.4
+            }),
+            ambient: new Howl({
+                src: ['https://www.soundjay.com/mechanical/sounds/spaceship-ambient-01.mp3'],
+                volume: 0.1,
+                loop: true
+            })
+        };
+        
+        // Initialize sound effects after user interaction
+        function initSounds() {
+            // Start ambient sound
+            sounds.ambient.play();
+            
+            // Add hover sound to all buttons
+            const buttons = document.querySelectorAll('button, .btn, .nav-link, .course-card, .webinar-card');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    sounds.hover.play();
+                });
+            });
+            
+            // Add click sound to all clickable elements
+            const clickables = document.querySelectorAll('a, button, .btn, [data-bs-toggle], .course-card, .webinar-card');
+            clickables.forEach(element => {
+                element.addEventListener('click', () => {
+                    sounds.click.play();
+                });
+            });
+            
+            // Special sound effects for specific interactions
+            const predictBtn = document.getElementById('predictBtn');
+            if (predictBtn) {
+                predictBtn.addEventListener('click', function() {
+                    setTimeout(() => {
+                        sounds.futuristic.play();
+                    }, 500);
+                });
+            }
+            
+            // Success sound for form submissions
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    if (this.checkValidity()) {
+                        setTimeout(() => {
+                            sounds.success.play();
+                        }, 300);
+                    } else {
+                        sounds.error.play();
+                    }
+                });
+            });
+            
+            // Sound for webinar topic display animations
+            const webinarDisplays = document.querySelectorAll('.webinar-topic-display');
+            webinarDisplays.forEach(display => {
+                display.addEventListener('mouseenter', () => {
+                    sounds.futuristic.play();
+                });
+            });
+        }
+        
+        // Wait for user interaction before enabling sounds
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add overlay to prompt user interaction
+            const soundOverlay = document.createElement('div');
+            soundOverlay.style.position = 'fixed';
+            soundOverlay.style.top = '0';
+            soundOverlay.style.left = '0';
+            soundOverlay.style.width = '100%';
+            soundOverlay.style.height = '100%';
+            soundOverlay.style.backgroundColor = 'rgba(0,0,0,0.8)';
+            soundOverlay.style.zIndex = '9999';
+            soundOverlay.style.display = 'flex';
+            soundOverlay.style.flexDirection = 'column';
+            soundOverlay.style.justifyContent = 'center';
+            soundOverlay.style.alignItems = 'center';
+            soundOverlay.style.color = 'white';
+            soundOverlay.innerHTML = `
+                <h3 class="mb-4">Welcome to AI Academy</h3>
+                <p class="mb-4">Click anywhere to enable sound effects</p>
+                <button class="btn btn-neon">Continue</button>
+            `;
+            
+            document.body.appendChild(soundOverlay);
+            
+            // Remove overlay and initialize sounds on any click
+            soundOverlay.addEventListener('click', function() {
+                soundOverlay.style.display = 'none';
+                initSounds();
+            });
+        });
+        
+        // Add sound toggle button
+        const soundToggle = document.createElement('button');
+        soundToggle.id = 'soundToggle';
+        soundToggle.className = 'btn btn-neon btn-sm position-fixed bottom-0 end-0 m-3';
+        soundToggle.innerHTML = '<i class="fas fa-volume-up"></i> Sound On';
+        document.body.appendChild(soundToggle);
+        
+        let soundEnabled = true;
+        soundToggle.addEventListener('click', function() {
+            soundEnabled = !soundEnabled;
+            
+            if (soundEnabled) {
+                Howler.mute(false);
+                this.innerHTML = '<i class="fas fa-volume-up"></i> Sound On';
+                sounds.ambient.play();
+            } else {
+                Howler.mute(true);
+                this.innerHTML = '<i class="fas fa-volume-mute"></i> Sound Off';
+                sounds.ambient.stop();
+            }
+        });
+        </script>
+        <script>
+            // Create floating AI orbs
+            function createFloatingOrbs() {
+                const colors = ['rgba(0, 255, 252, 0.3)', 'rgba(188, 19, 254, 0.3)', 'rgba(255, 0, 255, 0.3)'];
+                const container = document.querySelector('.hero-section');
+                
+                for (let i = 0; i < 5; i++) {
+                    const orb = document.createElement('div');
+                    orb.className = 'ai-orb';
+                    orb.style.width = `${Math.random() * 200 + 100}px`;
+                    orb.style.height = orb.style.width;
+                    orb.style.background = `radial-gradient(circle, ${colors[i % colors.length]}, transparent 70%)`;
+                    orb.style.left = `${Math.random() * 80 + 10}%`;
+                    orb.style.top = `${Math.random() * 80 + 10}%`;
+                    orb.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                    orb.style.animationDelay = `${Math.random() * 5}s`;
+                    container.appendChild(orb);
+                }
+            }
+            
+            // Create neural network connections
+            function createNeuralNetwork() {
+                const container = document.getElementById('neuralNetwork');
+                const nodeCount = 15;
+                const nodes = [];
+                
+                // Create nodes
+                for (let i = 0; i < nodeCount; i++) {
+                    nodes.push({
+                        x: Math.random() * 100,
+                        y: Math.random() * 100,
+                        connections: []
+                    });
+                }
+                
+                // Create connections
+                nodes.forEach((node, i) => {
+                    // Connect to 2-4 other nodes
+                    const connectionCount = Math.floor(Math.random() * 3) + 2;
+                    for (let j = 0; j < connectionCount; j++) {
+                        const targetIndex = Math.floor(Math.random() * nodes.length);
+                        if (targetIndex !== i && !node.connections.includes(targetIndex)) {
+                            node.connections.push(targetIndex);
+                            
+                            const target = nodes[targetIndex];
+                            const distance = Math.sqrt(
+                                Math.pow(node.x - target.x, 2) + 
+                                Math.pow(node.y - target.y, 2)
+                            );
+                            
+                            if (distance < 40) { // Only connect nearby nodes
+                                const line = document.createElement('div');
+                                line.className = 'neural-line';
+                                line.style.width = `${distance}vw`;
+                                line.style.left = `${node.x}vw`;
+                                line.style.top = `${node.y}vh`;
+                                line.style.transform = `rotate(${Math.atan2(target.y - node.y, target.x - node.x)}rad)`;
+                                line.style.animationDelay = `${Math.random() * 2}s`;
+                                container.appendChild(line);
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Create data stream visualization
+            function createDataStream() {
+                const container = document.getElementById('dataStream');
+                const characters = '01';
+                
+                setInterval(() => {
+                    const dataBit = document.createElement('div');
+                    dataBit.className = 'data-bit';
+                    dataBit.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+                    dataBit.style.left = `${Math.random() * 100}%`;
+                    dataBit.style.fontSize = `${Math.random() * 10 + 10}px`;
+                    dataBit.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                    container.appendChild(dataBit);
+                    
+                    // Remove old elements
+                    if (container.children.length > 100) {
+                        container.removeChild(container.children[0]);
+                    }
+                }, 100);
+            }
+            
+            // Create binary rain effect
+            function createBinaryRain() {
+                const container = document.getElementById('binaryRain');
+                const columns = Math.floor(window.innerWidth / 20);
+                
+                for (let i = 0; i < columns; i++) {
+                    const column = document.createElement('div');
+                    column.style.position = 'absolute';
+                    column.style.left = `${i * 20}px`;
+                    column.style.width = '20px';
+                    column.style.height = '100vh';
+                    column.style.fontFamily = 'Courier New, monospace';
+                    column.style.fontWeight = 'bold';
+                    column.style.color = 'rgba(0,255,252,0.3)';
+                    column.style.fontSize = '18px';
+                    column.style.textAlign = 'center';
+                    column.style.wordBreak = 'break-all';
+                    column.style.overflow = 'hidden';
+                    container.appendChild(column);
+                    
+                    animateBinaryColumn(column);
+                }
+            }
+            
+            function animateBinaryColumn(column) {
+                let content = '';
+                const length = Math.floor(Math.random() * 10) + 5;
+                const speed = Math.random() * 100 + 50;
+                
+                for (let i = 0; i < length; i++) {
+                    content += Math.round(Math.random()) + '<br>';
+                }
+                
+                column.innerHTML = content;
+                
+                function update() {
+                    content = content.substring(content.indexOf('<br>') + 4);
+                    content += Math.round(Math.random()) + '<br>';
+                    column.innerHTML = content;
+                }
+                
+                setInterval(update, speed);
+            }
+            
+            // Add interactive card effects
+            function addInteractiveEffects() {
+                const cards = document.querySelectorAll('.course-card, .webinar-card');
+                
+                cards.forEach(card => {
+                    card.classList.add('interactive-card');
+                    
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        card.style.setProperty('--mouse-x', `${x - rect.width}px`);
+                        card.style.setProperty('--mouse-y', `${y - rect.height}px`);
+                    });
+                });
+            }
+            
+            // Create AI brain visualization
+            function createAIBrain() {
+                const container = document.querySelector('.ai-model-display');
+                const brainContainer = document.createElement('div');
+                brainContainer.className = 'ai-brain';
+                container.appendChild(brainContainer);
+                
+                // Create nodes
+                const nodeCount = 20;
+                const nodes = [];
+                
+                for (let i = 0; i < nodeCount; i++) {
+                    const node = document.createElement('div');
+                    node.className = 'brain-node';
+                    node.style.left = `${Math.random() * 100}%`;
+                    node.style.top = `${Math.random() * 100}%`;
+                    node.style.animationDelay = `${Math.random() * 2}s`;
+                    brainContainer.appendChild(node);
+                    nodes.push(node);
+                }
+                
+                // Create connections
+                nodes.forEach((node, i) => {
+                    // Connect to 2-3 other nodes
+                    const connectionCount = Math.floor(Math.random() * 2) + 2;
+                    for (let j = 0; j < connectionCount; j++) {
+                        const targetIndex = Math.floor(Math.random() * nodes.length);
+                        if (targetIndex !== i) {
+                            const target = nodes[targetIndex];
+                            const line = document.createElement('div');
+                            line.className = 'brain-connection';
+                            
+                            const x1 = parseInt(node.style.left);
+                            const y1 = parseInt(node.style.top);
+                            const x2 = parseInt(target.style.left);
+                            const y2 = parseInt(target.style.top);
+                            
+                            const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                            const angle = Math.atan2(y2 - y1, x2 - x1);
+                            
+                            line.style.width = `${length}%`;
+                            line.style.left = `${x1}%`;
+                            line.style.top = `${y1}%`;
+                            line.style.transform = `rotate(${angle}rad)`;
+                            line.style.animationDelay = `${Math.random() * 3}s`;
+                            
+                            brainContainer.appendChild(line);
+                        }
+                    }
+                });
+            }
+            
+            // Initialize all animations when DOM is loaded
+            document.addEventListener('DOMContentLoaded', function() {
+                createFloatingOrbs();
+                createNeuralNetwork();
+                createDataStream();
+                createBinaryRain();
+                addInteractiveEffects();
+                
+                // Add holographic effect to AI model display
+                const aiDisplay = document.querySelector('.ai-model-display');
+                aiDisplay.classList.add('holographic-text');
+                
+                // Create AI brain visualization when prediction is made
+                const predictBtn = document.getElementById('predictBtn');
+                if (predictBtn) {
+                    predictBtn.addEventListener('click', function() {
+                        setTimeout(() => {
+                            if (!document.querySelector('.ai-brain')) {
+                                createAIBrain();
+                            }
+                        }, 1000);
+                    });
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Add click event listeners to all download syllabus buttons
+                const downloadButtons = document.querySelectorAll('.download-syllabus');
+                
+                downloadButtons.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const courseType = this.getAttribute('data-course');
+                        downloadSyllabus(courseType);
+                    });
+                });
+                
+                function downloadSyllabus(courseType) {
+                    // Determine the API endpoint based on the course type
+                    const apiUrl = `https://localhost:7165/api/Toc/productivity`;
+
+                    const apiUrl1 = `https://localhost:7165/api/Toc/development`;
+
+                    const apiUrl2 = "https://localhost:7165/api/Toc/python-ai";
+                    
+                    // Create a temporary link element to trigger the download
+                    const link = document.createElement('a');
+                    link.href = apiUrl;
+
+                    const link2 = document.createElement('a');
+                    link2.href = apiUrl1;
+
+
+                    const link3 = document.createElement('a');
+                    link3.href = apiUrl2;
+                    
+                    
+                    // Set the download attribute with an appropriate filename
+                    if (courseType === 'use-ai') {
+                        link.download = 'Use-AI-Syllabus.html'; // or whatever file type you're using
+                    } else if (courseType === 'create-ai') {
+                        link2.download = 'Create-AI-Syllabus.html'; // or whatever file type you're using
+                    }
+                    else if(courseType=== "ml-python-tensorflow"){
+
+                    }
+                    
+                    // Append to the body, click it, and then remove it
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    document.body.appendChild(link2);
+                    link2.click();
+                    document.body.removeChild(link2);
+
+                    document.body.appendChild(link3);
+                    link3.click();
+                    document.body.removeChild(link3);
+                }
+            });
+            </script>
+            
+            <script>
+// script.js
+let video = document.getElementById('video');
+let canvas = document.getElementById('overlay');
+let ctx = canvas.getContext('2d');
+
+// Start webcam
+async function startVideo() {
+    alert("hi");
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        return new Promise((resolve) => {
+            video.onloadedmetadata = () => resolve();
+        });
+    } catch (err) {
+        console.error("Error accessing the camera:", err);
+    }
+}let model;
+async function loadModel() {
+    model = await faceLandmarksDetection.load(
+        faceLandmarksDetection.SupportedPackages.mediapipeFacemesh,
+        { maxFaces: 1 }
+    );
+}async function detectEyes() {
+    const predictions = await model.estimateFaces({ input: video });
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (predictions.length > 0) {
+        const keypoints = predictions[0].scaledMesh;
+        // Draw facial landmarks (optional)
+        keypoints.forEach(point => {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(point[0], point[1], 2, 2);
+        });
+
+        // Estimate eye direction
+        const leftEye = keypoints.slice(468, 473);  // Left eye landmarks
+        const rightEye = keypoints.slice(473, 478); // Right eye landmarks
+        const direction = getEyeDirection(leftEye, rightEye);
+        document.getElementById('direction').textContent = direction;
+    }
+
+    requestAnimationFrame(detectEyes);
+}
+
+function getEyeDirection(leftEye, rightEye) {
+
+    // Calculate average position of eye landmarks
+    const getCenter = (points) => {
+        const avgX = points.reduce((sum, p) => sum + p[0], 0) / points.length;
+        const avgY = points.reduce((sum, p) => sum + p[1], 0) / points.length;
+        return { x: avgX, y: avgY };
+    };
+
+    const leftCenter = getCenter(leftEye);
+    const rightCenter = getCenter(rightEye);
+
+    // Compare position to eye region (simplified logic)
+    if (leftCenter.x < leftEye[0][0]) return "LEFT";
+    if (leftCenter.x > leftEye[3][0]) return "RIGHT";
+    if (leftCenter.y < leftEye[1][1]) return "UP";
+    if (leftCenter.y > leftEye[4][1]) return "DOWN";
+    return "CENTER";
+}(async function main() {
+    await startVideo();
+    await loadModel();
+    video.play();
+    detectEyes();
+})();
+
+            </script>
+        
+        <div class="neural-network" id="neuralNetwork"></div>
+        <div class="data-stream" id="dataStream"></div>
+        <div class="binary-rain" id="binaryRain"></div>
+        
+</body>
+</html>

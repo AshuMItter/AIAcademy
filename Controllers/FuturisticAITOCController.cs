@@ -16,6 +16,255 @@ namespace AIAcademy.Controllers
         {
             _env = env;
         }
+        [HttpGet]
+        [Route("python-ai")]
+        public async Task<IActionResult> GetPythonAITrack()
+        {
+            var html = GenerateFuturisticHtml(
+                "🐍 Create AI with Python and TensorFlow",
+                "Master AI development with Python, TensorFlow, and modern ML techniques",
+                GetPythonAIContent()
+            );
+
+            return await ReturnHtmlFile(html, "Python_AI_Track.html");
+        }
+
+        private string GetPythonAIContent()
+        {
+            return @"
+<div class='python-ai-header'>
+    <h1>🐍 Create AI with Python and TensorFlow <span class='total-duration'>100 Hours</span></h1>
+    <p class='subtitle'>Master AI development with Python, TensorFlow, and modern ML techniques</p>
+</div>
+
+<div class='track'>
+    <h2>1. Python for AI & Data Science <span class='duration'>20 Hours</span></h2>
+    
+    <div class='module'>
+        <h3>1.1 Python Fundamentals for AI <span class='duration'>6 Hours</span></h3>
+        <ul>
+            <li>Python Syntax & Data Structures</li>
+            <li>NumPy for Numerical Computing</li>
+            <li>Pandas for Data Manipulation</li>
+            <li>Matplotlib & Seaborn for Visualization</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>1.2 Advanced Python for ML <span class='duration'>8 Hours</span></h3>
+        <ul>
+            <li>Object-Oriented Programming in Python</li>
+            <li>Functional Programming Techniques</li>
+            <li>Parallel Processing & Multiprocessing</li>
+            <li>Decorators & Generators for ML Pipelines</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>1.3 Data Preprocessing Techniques <span class='duration'>6 Hours</span></h3>
+        <ul>
+            <li>Feature Engineering & Selection</li>
+            <li>Handling Missing Data & Outliers</li>
+            <li>Data Normalization & Standardization</li>
+            <li>Working with Time Series Data</li>
+        </ul>
+    </div>
+</div>
+
+<div class='track'>
+    <h2>2. Machine Learning Foundations <span class='duration'>24 Hours</span></h2>
+    
+    <div class='module'>
+        <h3>2.1 Supervised Learning <span class='duration'>8 Hours</span></h3>
+        <ul>
+            <li>Linear & Logistic Regression</li>
+            <li>Decision Trees & Random Forests</li>
+            <li>Support Vector Machines</li>
+            <li>Model Evaluation Metrics</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>2.2 Unsupervised Learning <span class='duration'>6 Hours</span></h3>
+        <ul>
+            <li>Clustering Algorithms (K-Means, DBSCAN)</li>
+            <li>Dimensionality Reduction (PCA, t-SNE)</li>
+            <li>Anomaly Detection</li>
+            <li>Association Rule Learning</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>2.3 Ensemble Methods & Model Optimization <span class='duration'>6 Hours</span></h3>
+        <ul>
+            <li>Bagging & Boosting Techniques</li>
+            <li>Hyperparameter Tuning</li>
+            <li>Cross-Validation Strategies</li>
+            <li>Model Interpretability (SHAP, LIME)</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>2.4 ML Deployment with Python <span class='duration'>4 Hours</span></h3>
+        <ul>
+            <li>Model Serialization (Pickle, Joblib)</li>
+            <li>Building REST APIs with Flask/FastAPI</li>
+            <li>Containerization with Docker</li>
+        </ul>
+    </div>
+</div>
+
+<div class='track'>
+    <h2>3. Deep Learning with TensorFlow <span class='duration'>30 Hours</span></h2>
+    
+    <div class='module'>
+        <h3>3.1 Neural Network Fundamentals <span class='duration'>6 Hours</span></h3>
+        <ul>
+            <li>Perceptrons & Activation Functions</li>
+            <li>Backpropagation & Gradient Descent</li>
+            <li>TensorFlow Architecture & Eager Execution</li>
+            <li>Building Your First Neural Network</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>3.2 Computer Vision with CNNs <span class='duration'>8 Hours</span></h3>
+        <ul>
+            <li>Convolutional Neural Networks</li>
+            <li>Transfer Learning with Pre-trained Models</li>
+            <li>Image Classification & Object Detection</li>
+            <li>Data Augmentation Techniques</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>3.3 Natural Language Processing <span class='duration'>8 Hours</span></h3>
+        <ul>
+            <li>Text Preprocessing & Word Embeddings</li>
+            <li>Recurrent Neural Networks (RNNs)</li>
+            <li>Transformers & Attention Mechanisms</li>
+            <li>Building Chatbots & Text Generators</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>3.4 Advanced Architectures <span class='duration'>6 Hours</span></h3>
+        <ul>
+            <li>Autoencoders & GANs</li>
+            <li>Reinforcement Learning Basics</li>
+            <li>Time Series Forecasting with LSTMs</li>
+            <li>Model Optimization & Quantization</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>3.5 TensorFlow Deployment <span class='duration'>2 Hours</span></h3>
+        <ul>
+            <li>Serving Models with TF Serving</li>
+            <li>Converting to TensorFlow Lite</li>
+            <li>Edge Deployment Options</li>
+        </ul>
+    </div>
+</div>
+
+<div class='track'>
+    <h2>4. Specialized AI Applications <span class='duration'>16 Hours</span></h2>
+    
+    <div class='module'>
+        <h3>4.1 Generative AI <span class='duration'>4 Hours</span></h3>
+        <ul>
+            <li>Text-to-Image Generation</li>
+            <li>Diffusion Models</li>
+            <li>Ethical Considerations</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>4.2 AI for Healthcare <span class='duration'>4 Hours</span></h3>
+        <ul>
+            <li>Medical Image Analysis</li>
+            <li>Predictive Diagnostics</li>
+            <li>Privacy & Compliance</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>4.3 AI for Finance <span class='duration'>4 Hours</span></h3>
+        <ul>
+            <li>Algorithmic Trading Models</li>
+            <li>Fraud Detection</li>
+            <li>Risk Assessment</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>4.4 AI for IoT & Edge Devices <span class='duration'>4 Hours</span></h3>
+        <ul>
+            <li>TensorFlow Lite for Microcontrollers</li>
+            <li>On-Device Machine Learning</li>
+            <li>Optimizing for Resource Constraints</li>
+        </ul>
+    </div>
+</div>
+
+<div class='track'>
+    <h2>5. MLOps & Production AI <span class='duration'>10 Hours</span></h2>
+    
+    <div class='module'>
+        <h3>5.1 ML Pipelines <span class='duration'>3 Hours</span></h3>
+        <ul>
+            <li>Data Versioning (DVC)</li>
+            <li>Feature Stores</li>
+            <li>Automated Training Pipelines</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>5.2 Model Monitoring & Maintenance <span class='duration'>3 Hours</span></h3>
+        <ul>
+            <li>Model Drift Detection</li>
+            <li>Performance Monitoring</li>
+            <li>A/B Testing Models</li>
+        </ul>
+    </div>
+    
+    <div class='module'>
+        <h3>5.3 Scaling AI Systems <span class='duration'>4 Hours</span></h3>
+        <ul>
+            <li>Distributed Training</li>
+            <li>Kubernetes for ML</li>
+            <li>Cost Optimization</li>
+        </ul>
+    </div>
+</div>
+
+<div class='track'>
+    <h2>🎯 Capstone Project <span class='duration'>20 Hours</span></h2>
+    
+    <div class='module'>
+        <h3>End-to-End AI Solution</h3>
+        <ul>
+            <li>Problem Definition & Data Collection</li>
+            <li>Model Development & Training</li>
+            <li>Deployment & User Interface</li>
+            <li>Presentation & Documentation</li>
+        </ul>
+    </div>
+</div>
+
+<div class='track summary-track'>
+    <h2>📅 Total Program Duration</h2>
+    
+    <div class='module'>
+        <h3>Complete Learning Journey</h3>
+        <ul class='duration-summary'>
+            <li><span class='summary-label'>Core Curriculum:</span> <span class='summary-hours'>100 Hours</span></li>
+            <li><span class='summary-label'>Capstone Project:</span> <span class='summary-hours'>20 Hours</span></li>
+            <li class='total-hours'><span class='summary-label'>Total Investment:</span> <span class='summary-hours'>120 Hours</span></li>
+        </ul>
+    </div>
+</div>";
+        }
 
         [HttpGet]
         [Route("productivity")]
@@ -644,7 +893,21 @@ namespace AIAcademy.Controllers
 
         private string GetTotalDuration(string track)
         {
-            return track.Contains("Productivity") ? "45" : "80";
+            if(track.ToLower().Contains("productivity"))
+            {
+                return "45";
+            }
+            if (track.ToLower().Contains("development"))
+            {
+                return "80";
+
+            }
+            if (track.ToLower().Contains("python"))
+            {
+                return "100";
+            }
+
+            return " ";
         }
 
         private async Task<IActionResult> ReturnHtmlFile(string html, string filename)

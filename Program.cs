@@ -2,6 +2,7 @@
 using AIAcademy.Controllers;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -14,9 +15,9 @@ namespace AIAcademy
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddControllers();
             // Add services to the container.
 
-            builder.Services.AddControllers();
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
