@@ -39,7 +39,7 @@
                 }
                 if (flag)
                 {
-                    webinar.Id = Convert.ToInt32(map["id"]);
+                  //  webinar.Id = Convert.ToInt32(map["id"]);
                     webinar.Topic = map["topic"];
                     webinar.Description = map["description"];
                     webinar.Date = Convert.ToDateTime(map["date"]);

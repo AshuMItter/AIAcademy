@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Text;
 namespace AIAcademy.Controllers
 {
-   
+
     public class CodeAnalysisRequest
     {
         [Required]
@@ -31,6 +31,8 @@ namespace AIAcademy.Controllers
         public AnalysisController(IWebHostEnvironment env)
         {
             _env = env;
+            
+           
         }
 
         private bool IsUserCodeError(
